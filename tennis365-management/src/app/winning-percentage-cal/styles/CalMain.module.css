@@ -1,0 +1,31 @@
+.CalLayout {
+    margin: 0 auto;
+    background-color: gray;
+    max-width: 640px;
+    padding: 8px;
+}
+
+/* 승률 계산 메인 페이지 */
+
+
+.CalMainHeader{
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* 경기결과 페이지 */
+.ResultsHeader{
+    display: flex;
+    flex-direction: column;
+}
+
+.AddResult{
+    width: 120px;
+    background: none;
+    border: 1px solid white;
+}
+
+
+
+

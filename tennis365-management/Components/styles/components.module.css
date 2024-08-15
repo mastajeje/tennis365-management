@@ -1,0 +1,25 @@
+/* 경기 리스트 */
+.MatchContainer{
+    padding: 0;
+}
+.MatchList{
+    display: flex;
+    align-items: center;
+}
+
+.ATeam{
+    text-align: left;
+}
+
+.BTeam{
+    text-align: right;
+}
+
+.MatchScore{
+    text-align: center;
+}
+
+
+.col{
+    flex: 1 0 0%;
+}
