@@ -1,20 +1,48 @@
+'use client'
+
 import styles from '../../styles/CalMain.module.css';
 import MatchList from '../../../../../Components/MatchList';
+import { useState } from 'react';
+import { match } from 'assert';
+
+type MatchData = {teamA: string[], teamB: string[], aTeamScore: number, bTeamScore: number};
 const dummyMatchData = [
-    {
-        teamA: ['김정진', '박진아'],
-        teamB: ['김승기', '박상미'],
-        aTeamScore: 6,
-        bTeamScore: 4,
-    },
-]
+  {
+    teamA: ['김정진', '박진아'],
+    teamB: ['김승기', '박상미'],
+    aTeamScore: 6,
+    bTeamScore: 4,
+  },
+  {
+    teamA: ['이원우', '최건'],
+    teamB: ['김한결', '마민혁'],
+    aTeamScore: 6,
+    bTeamScore: 4,
+  },
+];
 
 export default function DailyResultPage({
   params: {date},
 }: {
   params: {date: string};
 }) {
-  console.log(date);
+ 
+
+const [isAddingResult, setIsAddingResult] = useState<boolean>(false);
+const [dummy, setDummy] = useState<MatchData[]>(dummyMatchData);
+
+const handleAddResult = () => {
+    setIsAddingResult(true);
+}
+
+const endAddingResult = () => {
+    setIsAddingResult(false);
+}
+
+const handleAddDummyData = (matchData: MatchData) => {
+    setDummy([...dummy, matchData]);
+}
+
   return (
     <div>
       <header className={styles.ResultsHeader}>
@@ -22,11 +50,17 @@ export default function DailyResultPage({
       </header>
       <div className="ResultsBody">
         <ul className={styles.MatchContainer}>
-        {dummyMatchData.map((match => {
+          {dummy.map((match) => {
             return (
-                <MatchList key={match.teamA[0]} teamA={match.teamA} teamB={match.teamB} aTeamScore={match.aTeamScore} bTeamScore={match.bTeamScore}/>
-            )
-        }))}
+              <MatchList
+                key={match.teamA[0]}
+                teamA={match.teamA}
+                teamB={match.teamB}
+                aTeamScore={match.aTeamScore}
+                bTeamScore={match.bTeamScore}
+              />
+            );
+          })}
           {/* <li className={styles.MatchList}>
             <div className={`${styles.col} ${styles.ATeam}`}>
               <h5>김정진</h5>
@@ -44,7 +78,10 @@ export default function DailyResultPage({
           </li> */}
         </ul>
 
-        <button className={styles.AddResult}>+ 경기결과 추가</button>
+        {isAddingResult ? 
+            <MatchList isAddingResult={isAddingResult} endAddingResult={endAddingResult} handleAddDummy={handleAddDummyData}/>
+         : 
+         <button className={styles.AddResult} onClick={handleAddResult}>+ 경기결과 추가</button>}
       </div>
     </div>
   );
