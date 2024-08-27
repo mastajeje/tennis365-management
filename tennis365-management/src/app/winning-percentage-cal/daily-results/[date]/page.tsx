@@ -61,21 +61,7 @@ const handleAddDummyData = (matchData: MatchData) => {
               />
             );
           })}
-          {/* <li className={styles.MatchList}>
-            <div className={`${styles.col} ${styles.ATeam}`}>
-              <h5>김정진</h5>
-              <h5>박진아</h5>
-            </div>  
-            <div className={`${styles.col} ${styles.MatchScore}`}>
-              <span>6</span>
-              <span>VS</span>
-              <span>4</span>
-            </div>
-            <div className={`${styles.col} ${styles.BTeam}`} >
-              <h5>김승기</h5>
-              <h5>박상미</h5>
-            </div>
-          </li> */}
+
         </ul>
 
         {isAddingResult ? 

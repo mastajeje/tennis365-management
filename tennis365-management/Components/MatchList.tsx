@@ -30,6 +30,8 @@ export default function DailyResult({
   const [scoreA, setScoreA] = useState<number>();
   const [scoreB, setScoreB] = useState<number>();
 
+  const MAX_SCORE = 6;
+
   useEffect(() => {
     // 매치 정보 초기화
     if (teamA) {
@@ -97,6 +99,11 @@ export default function DailyResult({
     }
 
     const handleAddResult = () => {
+        if(scoreA !== MAX_SCORE && scoreB !== MAX_SCORE || scoreA === scoreB) {
+            console.log(MAX_SCORE,scoreA,scoreB)
+            alert(`한 팀이 ${MAX_SCORE}점을 얻어야 합니다.`);
+            return;
+        }
         if(handleAddDummy && endAddingResult && playerA1 !== '' && playerA2 !== '' && playerB1 !== '' && playerB2 !== '' && scoreA && scoreB) {
               handleAddDummy({
                 teamA: [playerA1, playerA2],
@@ -106,6 +113,8 @@ export default function DailyResult({
               });
 
               endAddingResult()
+        } else {
+            alert('빈칸을 채워주세요');
         }
  
     }
