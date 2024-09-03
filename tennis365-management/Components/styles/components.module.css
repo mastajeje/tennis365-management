@@ -6,7 +6,7 @@
 .MatchContainer{
     padding: 0;
 }
-.MatchList{
+.MatchItem{
     display: flex;
     align-items: center;
 }

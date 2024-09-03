@@ -1,6 +1,7 @@
 'use client'
 import {useEffect, useState} from 'react';
 import styles from './styles/components.module.css';
+import SearchBar from './SearchBar';
 
 type MatchData = {teamA: string[], teamB: string[], aTeamScore: number, bTeamScore: number};
 
@@ -120,7 +121,7 @@ export default function DailyResult({
     }
 
   return (
-    <li className={styles.MatchList} onClick={()=> {
+    <li className={styles.MatchItem} onClick={()=> {
         console.log(playerA1, playerA2, playerB1, playerB2, scoreA, scoreB);
     }}>
       <div className={`${styles.col} ${styles.ATeam}`}>
@@ -128,24 +129,26 @@ export default function DailyResult({
           {teamA ? (
             <h5>{teamA[0]}</h5>
           ) : (
-            <input
-              type="text"
-              placeholder="선수1"
-              onChange={handlePlayerA1}
-              value={playerA1}
-            />
+            // <input
+            //   type="text"
+            //   placeholder="선수1"
+            //   onChange={handlePlayerA1}
+            //   value={playerA1}
+            // />
+            <SearchBar onSearch={handlePlayerA1} keyword={playerA1} placeholder={"선수1"}/>
           )}
         </div>
         <div className={styles.PlayerName}>
           {teamA ? (
             <h5>{teamA[1]}</h5>
           ) : (
-            <input
-              type="text"
-              placeholder="선수2"
-              onChange={handlePlayerA2}
-              value={playerA2}
-            />
+            // <input
+            //   type="text"
+            //   placeholder="선수2"
+            //   onChange={handlePlayerA2}
+            //   value={playerA2}
+            // />
+            <SearchBar onSearch={handlePlayerA2} keyword={playerA2} placeholder={"선수2"}/>
           )}
         </div>
       </div>
@@ -157,7 +160,7 @@ export default function DailyResult({
           onChange={handleScoreA}
           value={scoreA}/>
         )}
-        <span>VS</span>
+        <span> VS </span>
         {bTeamScore ? (
           <span>{bTeamScore}</span>
         ) : (
@@ -175,25 +178,26 @@ export default function DailyResult({
           {teamB ? (
             <h5>{teamB[0]}</h5>
           ) : (
-            <input
-              type="text"
-              placeholder="선수1"
-              onChange={handlePlayerB1}
-              value={playerB1}
-            />
+            // <input
+            //   type="text"
+            //   placeholder="선수1"
+            //   onChange={handlePlayerB1}
+            //   value={playerB1}
+            // />
+            <SearchBar onSearch={handlePlayerB1} keyword={playerB1} placeholder={"선수1"}/>
           )}
         </div>
         <div className={styles.PlayerName}>
           {teamB ? (
             <h5>{teamB[1]}</h5>
           ) : (
-            <input
-              type="text"
-              placeholder="선수2"
-              onChange={handlePlayerB2}
-              value={playerB2}
-            />
-          )}
+            // <input
+            //   type="text"
+            //   placeholder="선수2"
+            //   onChange={handlePlayerB2}
+            //   value={playerB2}
+            // />
+            <SearchBar onSearch={handlePlayerB2} keyword={playerB2} placeholder={"선수2"}/>)}
         </div>
       </div>
     </li>

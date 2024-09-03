@@ -1,5 +1,12 @@
 const query = require('../query')
 
+
+export async function GET(req: Request, res:Response){
+    const {searchParams} = new URL(req.url);
+    const date = searchParams.get('date');
+    
+}
+
 export async function POST(req: Request) {
     try{
 const data = await req.json()

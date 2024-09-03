@@ -1,11 +1,15 @@
-'use client'
+'use client';
 
 import styles from '../../styles/CalMain.module.css';
-import MatchList from '../../../../../Components/MatchList';
-import { useState } from 'react';
-import { match } from 'assert';
+import MatchItem from '../../../../../Components/MatchItem';
+import {useEffect, useState} from 'react';
 
-type MatchData = {teamA: string[], teamB: string[], aTeamScore: number, bTeamScore: number};
+type MatchData = {
+  teamA: string[];
+  teamB: string[];
+  aTeamScore: number;
+  bTeamScore: number;
+};
 const dummyMatchData = [
   {
     teamA: ['김정진', '박진아'],
@@ -26,22 +30,41 @@ export default function DailyResultPage({
 }: {
   params: {date: string};
 }) {
- 
+  const [isAddingResult, setIsAddingResult] = useState<boolean>(false);
+  const [dummy, setDummy] = useState<MatchData[]>(dummyMatchData);
 
-const [isAddingResult, setIsAddingResult] = useState<boolean>(false);
-const [dummy, setDummy] = useState<MatchData[]>(dummyMatchData);
+useEffect(()=> {
+    const fetchItems = async () => {
+        try{
+            const response = await fetch('')
+        } catch (error){
+            console.error(error)
+        }
+    }
+})
 
-const handleAddResult = () => {
+  
+  const handleAddResult = () => {
     setIsAddingResult(true);
-}
+  };
 
-const endAddingResult = () => {
+  const endAddingResult = () => {
     setIsAddingResult(false);
-}
+  };
 
-const handleAddDummyData = (matchData: MatchData) => {
-    setDummy([...dummy, matchData]);
-}
+  const handleAddDummyData = async (matchData: MatchData) => {
+    // setDummy([...dummy, matchData]);
+    try {
+      const response = await fetch('/api/matches', {
+        method: 'POST',
+        body: JSON.stringify(matchData),
+      });
+
+      if(!response.ok) throw new Error('Failed to add match')
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -52,7 +75,7 @@ const handleAddDummyData = (matchData: MatchData) => {
         <ul className={styles.MatchContainer}>
           {dummy.map((match) => {
             return (
-              <MatchList
+              <MatchItem
                 key={match.teamA[0]}
                 teamA={match.teamA}
                 teamB={match.teamB}
@@ -61,13 +84,19 @@ const handleAddDummyData = (matchData: MatchData) => {
               />
             );
           })}
-
         </ul>
 
-        {isAddingResult ? 
-            <MatchList isAddingResult={isAddingResult} endAddingResult={endAddingResult} handleAddDummy={handleAddDummyData}/>
-         : 
-         <button className={styles.AddResult} onClick={handleAddResult}>+ 경기결과 추가</button>}
+        {isAddingResult ? (
+          <MatchItem
+            isAddingResult={isAddingResult}
+            endAddingResult={endAddingResult}
+            handleAddDummy={handleAddDummyData}
+          />
+        ) : (
+          <button className={styles.AddResult} onClick={handleAddResult}>
+            + 경기결과 추가
+          </button>
+        )}
       </div>
     </div>
   );

@@ -22,6 +22,7 @@ const query = {
 
     update_player_loss: (player_id: number) => 
         pool.query('UPDATE player SET losses = losses + 1, participation = participation + 1, debt = debt + 5000 WHERE id = $1', [player_id])
+
 }
 
 module.exports = query;
