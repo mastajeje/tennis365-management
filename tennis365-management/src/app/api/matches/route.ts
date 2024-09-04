@@ -4,7 +4,13 @@ const query = require('../query')
 export async function GET(req: Request, res:Response){
     const {searchParams} = new URL(req.url);
     const date = searchParams.get('date');
-    
+    if(date){
+        const matches = await query.get_matches_by_date(date);
+        return Response.json(matches.rows)
+    }  else {
+        return Response.json({'message':'error no data found'})
+    }
+
 }
 
 export async function POST(req: Request) {
@@ -12,7 +18,17 @@ export async function POST(req: Request) {
 const data = await req.json()
 const { aTeam, bTeam, aTeamScore, bTeamScore} = data
 
-if( aTeamScore && bTeamScore) {
+const checkNonExistPlayer =await checkPlayers([...aTeam, ...bTeam]);
+
+if(checkNonExistPlayer?.missingPlayers.length > 0){
+    // DB에 존재하지 않는 선수가 있을 경우 추가
+    checkNonExistPlayer.missingPlayers?.forEach((player_name: string) => {
+       const result = query.insert_player(player_name)
+       console.log(result);
+    })
+}
+
+if(aTeamScore && bTeamScore) {
     const winnerTeam = aTeamScore > bTeamScore ? 'A' : 'B'
     const match_result = await query.post_match(winnerTeam, aTeamScore, bTeamScore)
     if(match_result.rows.length > 0) {
@@ -51,10 +67,23 @@ if( aTeamScore && bTeamScore) {
         return Response.json({'message':'success'})
     }
 
-}
+} 
 
     } catch (error: any) {
         return new Response(JSON.stringify({error: error.message}), {status: 500})
     }
+
+}
+
+const checkPlayers =async (playerNames: string[]) => {
+
+    const result = await query.check_players_by_name(playerNames);
+
+    const existingPlayers = result.rows.map((row: {name:string})=> row.name);
+    const missingPlayers = playerNames.filter((name)=> !existingPlayers.includes(name));
+
+
+        return { missingPlayers}
+  
 
 }

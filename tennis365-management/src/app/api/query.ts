@@ -9,6 +9,8 @@ const pool = new Pool({
 })
 
 const query = {
+    get_matches_by_date: (date: string) => 
+        pool.query('SELECT player_match.* FROM player_match join matches on player_match.matches_id = matches.id where matches.date = $1', [date]),
     post_match: (winnerTeam: string, aTeamScore: number, bTeamScore:number) =>
         pool.query('INSERT INTO matches (winner_team, a_score, b_score) VALUES ($1, $2, $3) RETURNING *', [winnerTeam, aTeamScore, bTeamScore]),
 
@@ -21,8 +23,11 @@ const query = {
         pool.query('UPDATE player SET wins = wins + 1, participation = participation + 1 WHERE id = $1', [player_id]),
 
     update_player_loss: (player_id: number) => 
-        pool.query('UPDATE player SET losses = losses + 1, participation = participation + 1, debt = debt + 5000 WHERE id = $1', [player_id])
-
+        pool.query('UPDATE player SET losses = losses + 1, participation = participation + 1, debt = debt + 5000 WHERE id = $1', [player_id]),
+    check_players_by_name: (player_names: string[]) =>
+        pool.query('SELECT player."name" FROM player WHERE player."name" = ANY($1)', [player_names]),
+    insert_player: (player_name: string) =>
+        pool.query('INSERT INTO player ("name") VALUES ($1)',[player_name])
 }
 
 module.exports = query;
