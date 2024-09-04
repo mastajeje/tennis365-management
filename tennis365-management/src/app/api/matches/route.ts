@@ -28,7 +28,8 @@ if(checkNonExistPlayer?.missingPlayers.length > 0){
     })
 }
 
-if(aTeamScore && bTeamScore) {
+// 점수가 0일때를 falsy가 아닌 값으로 처리하기 위해 체크
+if(aTeamScore !== null && aTeamScore !== undefined && bTeamScore !== null && bTeamScore !== undefined) {
     const winnerTeam = aTeamScore > bTeamScore ? 'A' : 'B'
     const match_result = await query.post_match(winnerTeam, aTeamScore, bTeamScore)
     if(match_result.rows.length > 0) {
