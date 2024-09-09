@@ -12,7 +12,7 @@ interface IResultProps {
   bTeamScore?: number;
   isAddingResult?: boolean;
   endAddingResult?: () => void;
-  handleAddDummy?: (matchData: MatchData) => void;
+  onPostMatch?: (matchData: MatchData) => void;
 }
 
 export default function DailyResult({
@@ -22,7 +22,7 @@ export default function DailyResult({
   bTeamScore,
   isAddingResult,
   endAddingResult,
-  handleAddDummy
+  onPostMatch
 }: IResultProps) {
   const [playerA1, setPlayerA1] = useState<string>('');
   const [playerA2, setPlayerA2] = useState<string>('');
@@ -105,8 +105,8 @@ export default function DailyResult({
             alert(`한 팀이 ${MAX_SCORE}점을 얻어야 합니다.`);
             return;
         }
-        if(handleAddDummy && endAddingResult && playerA1 !== '' && playerA2 !== '' && playerB1 !== '' && playerB2 !== '' && scoreA && scoreB) {
-              handleAddDummy({
+        if(onPostMatch && endAddingResult && playerA1 !== '' && playerA2 !== '' && playerB1 !== '' && playerB2 !== '' && scoreA && scoreB) {
+              onPostMatch({
                 teamA: [playerA1, playerA2],
                 teamB: [playerB1,playerB2],
                 aTeamScore: scoreA,

@@ -1,4 +1,4 @@
-const query = require('../query')
+const query = require('../../query')
 
 
 export async function GET(req: Request, res:Response){

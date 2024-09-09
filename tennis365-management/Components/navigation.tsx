@@ -13,7 +13,7 @@ export default function Navigation() {
             <Link href='/'>Home</Link> {path === '/' ? "😀" : ''}
         </li>
         <li>
-            <Link href='/winning-percentage-cal'>승률 계산기</Link> {path === '/winning-percentage-cal' ? "😀" : ''}
+            <Link href='/win-rate'>승률 계산기</Link> {path === '/win-rate' ? "😀" : ''}
         </li>
       </ul>
     </nav>

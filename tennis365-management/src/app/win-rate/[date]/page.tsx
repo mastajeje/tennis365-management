@@ -1,7 +1,7 @@
 'use client';
 
-import styles from '../../styles/CalMain.module.css';
-import MatchItem from '../../../../../Components/MatchItem';
+import styles from '../styles/CalMain.module.css';
+import MatchItem from '../../../../Components/MatchItem';
 import {useEffect, useState} from 'react';
 
 type MatchData = {
@@ -52,10 +52,10 @@ useEffect(()=> {
     setIsAddingResult(false);
   };
 
-  const handleAddDummyData = async (matchData: MatchData) => {
+  const handlePostMatch = async (matchData: MatchData) => {
     // setDummy([...dummy, matchData]);
     try {
-      const response = await fetch('/api/matches', {
+      const response = await fetch('/api/win-rate/matches', {
         method: 'POST',
         body: JSON.stringify(matchData),
       });
@@ -90,7 +90,7 @@ useEffect(()=> {
           <MatchItem
             isAddingResult={isAddingResult}
             endAddingResult={endAddingResult}
-            handleAddDummy={handleAddDummyData}
+            onPostMatch={handlePostMatch}
           />
         ) : (
           <button className={styles.AddResult} onClick={handleAddResult}>
