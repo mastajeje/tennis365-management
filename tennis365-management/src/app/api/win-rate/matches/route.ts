@@ -16,7 +16,7 @@ export async function GET(req: Request, res:Response){
 export async function POST(req: Request) {
     try{
 const data = await req.json()
-const { aTeam, bTeam, aTeamScore, bTeamScore} = data
+const { aTeam, bTeam, aTeamScore, bTeamScore, matchDate} = data
 
 const checkNonExistPlayer =await checkPlayers([...aTeam, ...bTeam]);
 
@@ -31,7 +31,7 @@ if(checkNonExistPlayer?.missingPlayers.length > 0){
 // 점수가 0일때를 falsy가 아닌 값으로 처리하기 위해 체크
 if(aTeamScore !== null && aTeamScore !== undefined && bTeamScore !== null && bTeamScore !== undefined) {
     const winnerTeam = aTeamScore > bTeamScore ? 'A' : 'B'
-    const match_result = await query.post_match(winnerTeam, aTeamScore, bTeamScore)
+    const match_result = await query.post_match(winnerTeam, aTeamScore, bTeamScore, matchDate)
     if(match_result.rows.length > 0) {
         const matchedPlayers = [...aTeam, ...bTeam]
         const players = await query.get_matched_players(matchedPlayers)

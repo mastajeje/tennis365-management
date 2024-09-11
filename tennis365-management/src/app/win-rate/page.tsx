@@ -50,7 +50,7 @@ export default function WinningPercentageCal() {
 
     const getMatchDates = async (year: number, month: number) => {
             try {
-      const response = await fetch(`/api/win-rate?year=${year}&month=${month}`, {
+      const response = await fetch(`/api/win-rate/calendar?year=${year}&month=${month}`, {
         method: 'GET'
       });
 

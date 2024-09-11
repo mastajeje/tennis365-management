@@ -2,28 +2,32 @@
 import {useEffect, useState} from 'react';
 import styles from './styles/components.module.css';
 import SearchBar from './SearchBar';
+import { usePathname } from 'next/navigation';
+import path from 'path';
 
-type MatchData = {teamA: string[], teamB: string[], aTeamScore: number, bTeamScore: number};
+type MatchData = {aTeam: string[], bTeam: string[], aTeamScore: number, bTeamScore: number, matchDate: string};
 
 interface IResultProps {
-  teamA?: string[];
-  teamB?: string[];
+  aTeam?: string[];
+  bTeam?: string[];
   aTeamScore?: number;
   bTeamScore?: number;
   isAddingResult?: boolean;
+  matchDate?: string;
   endAddingResult?: () => void;
   onPostMatch?: (matchData: MatchData) => void;
 }
 
 export default function DailyResult({
-  teamA,
-  teamB,
+  aTeam,
+  bTeam,
   aTeamScore,
   bTeamScore,
   isAddingResult,
   endAddingResult,
   onPostMatch
 }: IResultProps) {
+    const pathname = usePathname();
   const [playerA1, setPlayerA1] = useState<string>('');
   const [playerA2, setPlayerA2] = useState<string>('');
   const [playerB1, setPlayerB1] = useState<string>('');
@@ -31,17 +35,20 @@ export default function DailyResult({
   const [scoreA, setScoreA] = useState<number>();
   const [scoreB, setScoreB] = useState<number>();
 
+//   const {date} = router.query;
+const matchDate = pathname.split('/')[2];
+  
   const MAX_SCORE = 6;
-
+  
   useEffect(() => {
     // 매치 정보 초기화
-    if (teamA) {
-      setPlayerA1(teamA[0]);
-      setPlayerA2(teamA[1]);
+    if (aTeam) {
+      setPlayerA1(aTeam[0]);
+      setPlayerA2(aTeam[1]);
     }
-    if (teamB) {
-      setPlayerB1(teamB[0]);
-      setPlayerB2(teamB[1]);
+    if (bTeam) {
+      setPlayerB1(bTeam[0]);
+      setPlayerB2(bTeam[1]);
     }
     if (aTeamScore) {
       setScoreA(aTeamScore);
@@ -107,10 +114,11 @@ export default function DailyResult({
         }
         if(onPostMatch && endAddingResult && playerA1 !== '' && playerA2 !== '' && playerB1 !== '' && playerB2 !== '' && scoreA && scoreB) {
               onPostMatch({
-                teamA: [playerA1, playerA2],
-                teamB: [playerB1,playerB2],
+                aTeam: [playerA1, playerA2],
+                bTeam: [playerB1,playerB2],
                 aTeamScore: scoreA,
                 bTeamScore: scoreB,
+                matchDate
               });
 
               endAddingResult()
@@ -126,8 +134,8 @@ export default function DailyResult({
     }}>
       <div className={`${styles.col} ${styles.ATeam}`}>
         <div className={styles.PlayerName}>
-          {teamA ? (
-            <h5>{teamA[0]}</h5>
+          {aTeam ? (
+            <h5>{aTeam[0]}</h5>
           ) : (
             // <input
             //   type="text"
@@ -139,8 +147,8 @@ export default function DailyResult({
           )}
         </div>
         <div className={styles.PlayerName}>
-          {teamA ? (
-            <h5>{teamA[1]}</h5>
+          {aTeam ? (
+            <h5>{aTeam[1]}</h5>
           ) : (
             // <input
             //   type="text"
@@ -175,8 +183,8 @@ export default function DailyResult({
       </div>
       <div className={`${styles.col} ${styles.BTeam}`}>
         <div className={styles.PlayerName}>
-          {teamB ? (
-            <h5>{teamB[0]}</h5>
+          {bTeam ? (
+            <h5>{bTeam[0]}</h5>
           ) : (
             // <input
             //   type="text"
@@ -188,8 +196,8 @@ export default function DailyResult({
           )}
         </div>
         <div className={styles.PlayerName}>
-          {teamB ? (
-            <h5>{teamB[1]}</h5>
+          {bTeam ? (
+            <h5>{bTeam[1]}</h5>
           ) : (
             // <input
             //   type="text"

@@ -5,21 +5,22 @@ import MatchItem from '../../../../Components/MatchItem';
 import {useEffect, useState} from 'react';
 
 type MatchData = {
-  teamA: string[];
-  teamB: string[];
+  aTeam: string[];
+  bTeam: string[];
   aTeamScore: number;
   bTeamScore: number;
+  matchDate?: string;
 };
 const dummyMatchData = [
   {
-    teamA: ['김정진', '박진아'],
-    teamB: ['김승기', '박상미'],
+    aTeam: ['김정진', '박진아'],
+    bTeam: ['김승기', '박상미'],
     aTeamScore: 6,
     bTeamScore: 4,
   },
   {
-    teamA: ['이원우', '최건'],
-    teamB: ['김한결', '마민혁'],
+    aTeam: ['이원우', '최건'],
+    bTeam: ['김한결', '마민혁'],
     aTeamScore: 6,
     bTeamScore: 4,
   },
@@ -32,7 +33,7 @@ export default function DailyResultPage({
 }) {
   const [isAddingResult, setIsAddingResult] = useState<boolean>(false);
   const [dummy, setDummy] = useState<MatchData[]>(dummyMatchData);
-
+console.log(date)
 useEffect(()=> {
     const fetchItems = async () => {
         try{
@@ -76,9 +77,9 @@ useEffect(()=> {
           {dummy.map((match) => {
             return (
               <MatchItem
-                key={match.teamA[0]}
-                teamA={match.teamA}
-                teamB={match.teamB}
+                key={match.aTeam[0]}
+                aTeam={match.aTeam}
+                bTeam={match.bTeam}
                 aTeamScore={match.aTeamScore}
                 bTeamScore={match.bTeamScore}
               />
