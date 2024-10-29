@@ -6,6 +6,24 @@ export async function GET(req: Request, res:Response){
     const date = searchParams.get('date');
     if(date){
         const matches = await query.get_matches_by_date(date);
+        let formattedMatches = {}
+        // matches.rows.forEach((match: {matches_id:number,name:string, winner_team: string, a_score:number, b_score:number, time_added: string, team: string, winner: string}) => {
+        //     console.log(match);
+        //     const matchId = match.matches_id;
+        //     formattedMatches = {
+        //         [matchId] :{
+        //             winner_team: match.winner_team,
+        //             a_score: match.a_score,
+        //             b_score: match.b_score,
+        //             time_added: match.time_added,
+        //             aTeam: match.team === 'A' ? [match.name ] : [...formattedMatches['matchId']aTeam,]
+        //             bTeam: match.bTeam,
+        //             winner: match.winner
+        //         }
+        //     }
+        // })
+
+        console.log(formattedMatches)
         return Response.json(matches.rows)
     }  else {
         return Response.json({'message':'error no data found'})
@@ -57,7 +75,7 @@ if(aTeamScore !== null && aTeamScore !== undefined && bTeamScore !== null && bTe
                     } else{
                         //player가 A팀에 속한 경우
                         query.insert_player_match('A', false, match_result.rows[0].id, player.id)
-                        query.update_player_lose(player.id);
+                        query.update_player_loss(player.id);
                     }
                     //B팀승리
             
@@ -71,7 +89,7 @@ if(aTeamScore !== null && aTeamScore !== undefined && bTeamScore !== null && bTe
 } 
 
     } catch (error: any) {
-        return new Response(JSON.stringify({error: error.message}), {status: 500})
+        return new Response(JSON.stringify({error: error}), {status: 500})
     }
 
 }

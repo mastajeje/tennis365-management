@@ -10,13 +10,13 @@ const pool = new Pool({
 
 const query = {
     get_matches_by_date: (date: string) => 
-        pool.query('SELECT player_match.* FROM player_match join matches on player_match.matches_id = matches.id where matches.date = $1', [date]),
+        pool.query('SELECT player_match.matches_id, player_match.team, player_match.is_winner, matches.winner_team ,matches.a_score, matches.b_score,matches.time_added, player."name" FROM player_match join matches on player_match.matches_id = matches.id join player on player_match.player_id = player.id where matches.match_date = $1', [date]),
     get_match_dates:(year:number, month:number) => 
         pool.query('SELECT DISTINCT date FROM match_calendar where extract(year from Date) = $1 and extract(month from DATE) = $2 ORDER BY Date',[year, month]),
     insert_match_date:() => 
         pool.query('INSERT INTO match_calendar VALUES (NOW())'),
     post_match: (winnerTeam: string, aTeamScore: number, bTeamScore:number, matchDate:string) =>
-        pool.query('INSERT INTO matches (winner_team, a_score, b_score,match_date) VALUES ($1, $2, $3, $4) RETURNING *', [winnerTeam, aTeamScore, bTeamScore,matchDate]),
+        pool.query('INSERT INTO matches (winner_team, a_score, b_score, match_date) VALUES ($1, $2, $3, $4) RETURNING *', [winnerTeam, aTeamScore, bTeamScore,matchDate]),
     get_matched_players: (matchedPlayers: string[]) =>
         pool.query('SELECT * FROM get_matched_players($1)',[matchedPlayers]),
 

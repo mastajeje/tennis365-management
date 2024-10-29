@@ -34,15 +34,24 @@ export default function DailyResultPage({
   const [isAddingResult, setIsAddingResult] = useState<boolean>(false);
   const [dummy, setDummy] = useState<MatchData[]>(dummyMatchData);
 console.log(date)
+
 useEffect(()=> {
     const fetchItems = async () => {
         try{
-            const response = await fetch('')
+
+            const response = await fetch(`/api/win-rate/matches?date=${date}`,{
+                method: 'GET'
+            })
+
+            const data = await response.json()
+            console.log('!!!', data,'!!!')
         } catch (error){
             console.error(error)
         }
     }
-})
+
+    fetchItems()
+},[date])
 
   
   const handleAddResult = () => {
