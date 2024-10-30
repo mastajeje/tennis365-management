@@ -2,29 +2,48 @@ const query = require('../../query')
 
 
 export async function GET(req: Request, res:Response){
+    interface IMatchData {
+        [matchId:number]: {
+            a_score: number;
+            b_score: number;
+            time_added: string;
+            aTeam: string[],
+            bTeam: string[],
+            winner: string
+        } ;
+    }
+
     const {searchParams} = new URL(req.url);
     const date = searchParams.get('date');
     if(date){
         const matches = await query.get_matches_by_date(date);
-        let formattedMatches = {}
-        // matches.rows.forEach((match: {matches_id:number,name:string, winner_team: string, a_score:number, b_score:number, time_added: string, team: string, winner: string}) => {
-        //     console.log(match);
-        //     const matchId = match.matches_id;
-        //     formattedMatches = {
-        //         [matchId] :{
-        //             winner_team: match.winner_team,
-        //             a_score: match.a_score,
-        //             b_score: match.b_score,
-        //             time_added: match.time_added,
-        //             aTeam: match.team === 'A' ? [match.name ] : [...formattedMatches['matchId']aTeam,]
-        //             bTeam: match.bTeam,
-        //             winner: match.winner
-        //         }
-        //     }
-        // })
+        let formattedMatches:IMatchData 
+        formattedMatches = {}
+        matches.rows.forEach((match: {matches_id:number,name:string, a_score:number, b_score:number, time_added: string, team: string, winner_team: string}) => {
 
-        console.log(formattedMatches)
-        return Response.json(matches.rows)
+            const matchId = match.matches_id;
+    
+            // matchId key에 property가 없을 경우 초기화
+            if(!formattedMatches[matchId]){
+                formattedMatches[matchId] = {
+                    a_score: match.a_score,
+                    b_score: match.b_score,
+                    time_added: match.time_added,
+                    aTeam: [],
+                    bTeam: [],
+                    winner: match.winner_team
+                }
+            }
+             
+                 if(match.team === "A"){
+                    formattedMatches[matchId].aTeam.push(match.name)
+                 } else if(match.team === "B"){
+                    formattedMatches[matchId].bTeam.push(match.name)
+                }
+        })
+
+         console.log(formattedMatches)
+        return Response.json(formattedMatches)
     }  else {
         return Response.json({'message':'error no data found'})
     }
@@ -42,7 +61,7 @@ if(checkNonExistPlayer?.missingPlayers.length > 0){
     // DB에 존재하지 않는 선수가 있을 경우 추가
     checkNonExistPlayer.missingPlayers?.forEach((player_name: string) => {
        const result = query.insert_player(player_name)
-       console.log(result);
+    //    console.log(result);
     })
 }
 
