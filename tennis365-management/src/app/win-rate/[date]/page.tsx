@@ -7,24 +7,25 @@ import {useEffect, useState} from 'react';
 type MatchData = {
   aTeam: string[];
   bTeam: string[];
-  aTeamScore: number;
-  bTeamScore: number;
+  aScore: number;
+  bScore: number;
   matchDate?: string;
+  winner: string;
 };
-const dummyMatchData = [
-  {
-    aTeam: ['김정진', '박진아'],
-    bTeam: ['김승기', '박상미'],
-    aTeamScore: 6,
-    bTeamScore: 4,
-  },
-  {
-    aTeam: ['이원우', '최건'],
-    bTeam: ['김한결', '마민혁'],
-    aTeamScore: 6,
-    bTeamScore: 4,
-  },
-];
+// const dummyMatchData = [
+//   {
+//     aTeam: ['김정진', '박진아'],
+//     bTeam: ['김승기', '박상미'],
+//     aTeamScore: 6,
+//     bTeamScore: 4,
+//   },
+//   {
+//     aTeam: ['이원우', '최건'],
+//     bTeam: ['김한결', '마민혁'],
+//     aTeamScore: 6,
+//     bTeamScore: 4,
+//   },
+// ];
 
 export default function DailyResultPage({
   params: {date},
@@ -32,10 +33,10 @@ export default function DailyResultPage({
   params: {date: string};
 }) {
   const [isAddingResult, setIsAddingResult] = useState<boolean>(false);
-  const [dummy, setDummy] = useState<MatchData[]>(dummyMatchData);
-console.log(date)
+  const [matchData, setMatchData] = useState<MatchData[]>([]);
 
 useEffect(()=> {
+
     const fetchItems = async () => {
         try{
 
@@ -43,15 +44,16 @@ useEffect(()=> {
                 method: 'GET'
             })
 
-            const data = await response.json()
-            console.log('!!!', data,'!!!')
+            const data= await response.json();
+    
+            setMatchData((prevMatchData)=> [data]);
         } catch (error){
             console.error(error)
         }
     }
 
     fetchItems()
-},[date])
+},[])
 
   
   const handleAddResult = () => {
@@ -83,24 +85,34 @@ useEffect(()=> {
       </header>
       <div className="ResultsBody">
         <ul className={styles.MatchContainer}>
-          {dummy.map((match) => {
+          {matchData[0] ? 
+          <>
+          {Object.entries(matchData[0])?.map((match) => {
+
+          console.log(match);
+
+        //   fixme: match[1] is not a MatchData type
+            let matchInfo: MatchData = match[1] ;
+            
             return (
               <MatchItem
-                key={match.aTeam[0]}
-                aTeam={match.aTeam}
-                bTeam={match.bTeam}
-                aTeamScore={match.aTeamScore}
-                bTeamScore={match.bTeamScore}
+                key={match[0]}
+                aTeam={matchInfo.aTeam}
+                bTeam={matchInfo.bTeam}
+                aTeamScore={matchInfo.aScore}
+                bTeamScore={matchInfo.bScore}
               />
             );
-          })}
+          })} 
+          </>
+          : <h1>경기결과가 없습니다.</h1>}
         </ul>
 
         {isAddingResult ? (
           <MatchItem
             isAddingResult={isAddingResult}
             endAddingResult={endAddingResult}
-            onPostMatch={handlePostMatch}
+            // onPostMatch={handlePostMatch}
           />
         ) : (
           <button className={styles.AddResult} onClick={handleAddResult}>

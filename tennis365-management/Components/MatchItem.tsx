@@ -35,6 +35,9 @@ export default function DailyResult({
   const [scoreA, setScoreA] = useState<number>();
   const [scoreB, setScoreB] = useState<number>();
 
+useEffect(()=>{
+    console.log(aTeam, bTeam, aTeamScore, bTeamScore)
+},[])
 //   const {date} = router.query;
 const matchDate = pathname.split('/')[2];
   
