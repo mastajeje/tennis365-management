@@ -14,9 +14,9 @@ const query = {
     get_match_dates:(year:number, month:number) => 
         pool.query('SELECT DISTINCT date FROM match_calendar where extract(year from Date) = $1 and extract(month from DATE) = $2 ORDER BY Date',[year, month]),
     insert_match_date:() => 
-        pool.query('INSERT INTO match_calendar VALUES (NOW())'),
-    post_match: (winnerTeam: string, aTeamScore: number, bTeamScore:number, matchDate:string) =>
-        pool.query('INSERT INTO matches (winner_team, a_score, b_score, match_date) VALUES ($1, $2, $3, $4) RETURNING *', [winnerTeam, aTeamScore, bTeamScore,matchDate]),
+        pool.query('INSERT INTO match_calendar VALUES (NOW()) ON CONFLICT DO NOTHING'),
+    post_match: (winnerTeam: string, aScore: number, bScore:number, matchDate:string) =>
+        pool.query('INSERT INTO matches (winner_team, a_score, b_score, match_date) VALUES ($1, $2, $3, $4) RETURNING *', [winnerTeam, aScore, bScore, matchDate]),
     get_matched_players: (matchedPlayers: string[]) =>
         pool.query('SELECT * FROM get_matched_players($1)',[matchedPlayers]),
 

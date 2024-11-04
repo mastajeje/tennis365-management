@@ -4,25 +4,33 @@ import styles from './styles/components.module.css';
 import SearchBar from './SearchBar';
 import { usePathname } from 'next/navigation';
 import path from 'path';
+import { on } from 'events';
 
-type MatchData = {aTeam: string[], bTeam: string[], aTeamScore: number, bTeamScore: number, matchDate: string};
+type MatchData = {
+    aTeam: string[], 
+    bTeam: string[], 
+    aScore: number, 
+    bScore: number, 
+    matchDate: string
+    winner: string
+};
 
 interface IResultProps {
   aTeam?: string[];
   bTeam?: string[];
-  aTeamScore?: number;
-  bTeamScore?: number;
+  aScore?: number;
+  bScore?: number;
   isAddingResult?: boolean;
   matchDate?: string;
   endAddingResult?: () => void;
-  onPostMatch?: (matchData: MatchData) => void;
+  onPostMatch?: (matchData: MatchData) => Promise<any>;
 }
 
 export default function DailyResult({
   aTeam,
   bTeam,
-  aTeamScore,
-  bTeamScore,
+  aScore,
+  bScore,
   isAddingResult,
   endAddingResult,
   onPostMatch
@@ -36,7 +44,7 @@ export default function DailyResult({
   const [scoreB, setScoreB] = useState<number>();
 
 useEffect(()=>{
-    console.log(aTeam, bTeam, aTeamScore, bTeamScore)
+    console.log(aTeam, bTeam, aScore, bScore)
 },[])
 //   const {date} = router.query;
 const matchDate = pathname.split('/')[2];
@@ -53,11 +61,11 @@ const matchDate = pathname.split('/')[2];
       setPlayerB1(bTeam[0]);
       setPlayerB2(bTeam[1]);
     }
-    if (aTeamScore) {
-      setScoreA(aTeamScore);
+    if (aScore) {
+      setScoreA(aScore);
     }
-    if (bTeamScore) {
-      setScoreB(bTeamScore);
+    if (bScore) {
+      setScoreB(bScore);
     }
 
     // return () => {
@@ -115,12 +123,13 @@ const matchDate = pathname.split('/')[2];
             alert(`한 팀이 ${MAX_SCORE}점을 얻어야 합니다.`);
             return;
         }
+        console.log(playerA1, playerA2, playerB1, playerB2, scoreA, scoreB,onPostMatch, endAddingResult)
         if(onPostMatch && endAddingResult && playerA1 !== '' && playerA2 !== '' && playerB1 !== '' && playerB2 !== '' && scoreA && scoreB) {
               onPostMatch({
                 aTeam: [playerA1, playerA2],
                 bTeam: [playerB1,playerB2],
-                aTeamScore: scoreA,
-                bTeamScore: scoreB,
+                aScore: scoreA,
+                bScore: scoreB,
                 matchDate
               });
 
@@ -164,16 +173,16 @@ const matchDate = pathname.split('/')[2];
         </div>
       </div>
       <div className={`${styles.col} ${styles.MatchScore}`}>
-        <div>{aTeamScore ? (
-          <span>{aTeamScore}</span>
+        <div>{aScore ? (
+          <span>{aScore}</span>
         ) : (
           <input className={styles.ScoreInput} type="number" min="0" max="6" 
           onChange={handleScoreA}
           value={scoreA}/>
         )}
         <span> VS </span>
-        {bTeamScore ? (
-          <span>{bTeamScore}</span>
+        {bScore ? (
+          <span>{bScore}</span>
         ) : (
           <input className={styles.ScoreInput} type="number" min="0" max="6" onChange={handleScoreB}
           value={scoreB}/>

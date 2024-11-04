@@ -4,9 +4,9 @@ const query = require('../../query')
 export async function GET(req: Request, res:Response){
     interface IMatchData {
         [matchId:number]: {
-            a_score: number;
-            b_score: number;
-            time_added: string;
+            aScore: number;
+            bScore: number;
+            timeAdded: string;
             aTeam: string[],
             bTeam: string[],
             winner: string
@@ -26,9 +26,9 @@ export async function GET(req: Request, res:Response){
             // matchId key에 property가 없을 경우 초기화
             if(!formattedMatches[matchId]){
                 formattedMatches[matchId] = {
-                    a_score: match.a_score,
-                    b_score: match.b_score,
-                    time_added: match.time_added,
+                    aScore: match.a_score,
+                    bScore: match.b_score,
+                    timeAdded: match.time_added,
                     aTeam: [],
                     bTeam: [],
                     winner: match.winner_team
@@ -42,7 +42,7 @@ export async function GET(req: Request, res:Response){
                 }
         })
 
-         console.log(formattedMatches)
+   
         return Response.json(formattedMatches)
     }  else {
         return Response.json({'message':'error no data found'})
@@ -53,22 +53,23 @@ export async function GET(req: Request, res:Response){
 export async function POST(req: Request) {
     try{
 const data = await req.json()
-const { aTeam, bTeam, aTeamScore, bTeamScore, matchDate} = data
+const { aTeam, bTeam, aScore, bScore, matchDate} = data
 
 const checkNonExistPlayer =await checkPlayers([...aTeam, ...bTeam]);
 
 if(checkNonExistPlayer?.missingPlayers.length > 0){
     // DB에 존재하지 않는 선수가 있을 경우 추가
     checkNonExistPlayer.missingPlayers?.forEach((player_name: string) => {
-       const result = query.insert_player(player_name)
+     query.insert_player(player_name)
     //    console.log(result);
     })
 }
 
 // 점수가 0일때를 falsy가 아닌 값으로 처리하기 위해 체크
-if(aTeamScore !== null && aTeamScore !== undefined && bTeamScore !== null && bTeamScore !== undefined) {
-    const winnerTeam = aTeamScore > bTeamScore ? 'A' : 'B'
-    const match_result = await query.post_match(winnerTeam, aTeamScore, bTeamScore, matchDate)
+if(aScore !== null && aScore !== undefined && bScore !== null && bScore !== undefined) {
+    const winnerTeam = aScore > bScore ? 'A' : 'B'
+    query.insert_match_date();
+    const match_result = await query.post_match(winnerTeam, aScore, bScore, matchDate)
     if(match_result.rows.length > 0) {
         const matchedPlayers = [...aTeam, ...bTeam]
         const players = await query.get_matched_players(matchedPlayers)
@@ -108,7 +109,8 @@ if(aTeamScore !== null && aTeamScore !== undefined && bTeamScore !== null && bTe
 } 
 
     } catch (error: any) {
-        return new Response(JSON.stringify({error: error}), {status: 500})
+        console.log(error);
+        return new Response(JSON.stringify({error}), {status: 500})
     }
 
 }
