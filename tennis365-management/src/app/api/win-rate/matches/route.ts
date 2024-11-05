@@ -59,43 +59,42 @@ const checkNonExistPlayer =await checkPlayers([...aTeam, ...bTeam]);
 
 if(checkNonExistPlayer?.missingPlayers.length > 0){
     // DB에 존재하지 않는 선수가 있을 경우 추가
-    checkNonExistPlayer.missingPlayers?.forEach((player_name: string) => {
-     query.insert_player(player_name)
-    //    console.log(result);
+    checkNonExistPlayer.missingPlayers?.forEach(async(player_name: string) => {
+    await query.insert_player(player_name)
     })
 }
 
 // 점수가 0일때를 falsy가 아닌 값으로 처리하기 위해 체크
 if(aScore !== null && aScore !== undefined && bScore !== null && bScore !== undefined) {
     const winnerTeam = aScore > bScore ? 'A' : 'B'
-    query.insert_match_date();
+    await query.insert_match_date();
     const match_result = await query.post_match(winnerTeam, aScore, bScore, matchDate)
     if(match_result.rows.length > 0) {
         const matchedPlayers = [...aTeam, ...bTeam]
         const players = await query.get_matched_players(matchedPlayers)
         if(players.rows.length > 0) {
-            players.rows.forEach((player:{name:string,id:number}) => {
+            players.rows.forEach(async(player:{name:string,id:number}) => {
                 if(winnerTeam === 'A'){
                     //A팀승리
                     if(aTeam.includes(player.name)){
                         //player가 A팀에 속한 경우
-                        query.insert_player_match('A', true, match_result.rows[0].id, player.id)
-                        query.update_player_win(player.id);
+                       await query.insert_player_match('A', true, match_result.rows[0].id, player.id)
+                       await query.update_player_win(player.id);
                     } else {
                         //player가 B팀에 속한 경우
-                        query.insert_player_match('B', false, match_result.rows[0].id, player.id)
-                        query.update_player_loss(player.id);
+                       await query.insert_player_match('B', false, match_result.rows[0].id, player.id)
+                       await query.update_player_loss(player.id);
                     }
                 } else {
                     //B팀승리
                     if(bTeam.includes(player.name)){
                         //player가 B팀에 속한 경우
-                        query.insert_player_match('B', true, match_result.rows[0].id, player.id)
-                        query.update_player_win(player.id);
+                      await query.insert_player_match('B', true, match_result.rows[0].id, player.id)
+                      await query.update_player_win(player.id);
                     } else{
                         //player가 A팀에 속한 경우
-                        query.insert_player_match('A', false, match_result.rows[0].id, player.id)
-                        query.update_player_loss(player.id);
+                        await query.insert_player_match('A', false, match_result.rows[0].id, player.id)
+                        await query.update_player_loss(player.id);
                     }
                     //B팀승리
             
@@ -103,7 +102,7 @@ if(aScore !== null && aScore !== undefined && bScore !== null && bScore !== unde
         })
         }
 
-        return Response.json({'message':'success'})
+        return Response.json({'message':'success',matchID:match_result.rows[0].id})
     }
 
 } 

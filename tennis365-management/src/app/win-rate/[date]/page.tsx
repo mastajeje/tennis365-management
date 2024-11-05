@@ -47,7 +47,6 @@ export default function DailyResultPage({
         })
 
         const data= await response.json();
-        console.log(data,'data');
         setMatchData(data);
     } catch (error){
         console.error(error)
@@ -69,15 +68,23 @@ useEffect(()=> {
     setIsAddingResult(false);
   };
 
-  const handlePostMatch = async (matchData: MatchData):Promise<any> => {
+  const handlePostMatch = async (newMatchData: MatchData):Promise<any> => {
 
     try {
       const response = await fetch('/api/win-rate/matches', {
         method: 'POST',
-        body: JSON.stringify(matchData),
+        body: JSON.stringify(newMatchData),
       });
+   
       if(response.ok) {
-        fetchItems();
+        const data = await response.json();
+        const tempMatchID = data.matchID as number;
+        // 
+        setMatchData(prevMatchData => {
+            const updatedMatchData = {...prevMatchData};
+            updatedMatchData[tempMatchID] = newMatchData
+            return updatedMatchData;
+        });
       }else{
         throw new Error('Failed to add match')
       }
@@ -119,6 +126,7 @@ useEffect(()=> {
             isAddingResult={isAddingResult}
             endAddingResult={endAddingResult}
             onPostMatch={handlePostMatch}
+            
           />
         ) : (
           <button className={styles.AddResult} onClick={handleAddResult}>

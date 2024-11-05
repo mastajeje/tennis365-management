@@ -6,13 +6,13 @@ interface SearchBarProps {
 
 export default function SearchBar({onSearch, keyword, placeholder}: SearchBarProps) {
 
-const debounce = (func: (...args:any[])=>void, delay: number) => {
-    let timer: NodeJS.Timeout;
-    return function(this:any,...args:any[]) {
-        clearTimeout(timer);
-        timer = setTimeout(() => func.apply(this, args), delay)
-    }
-}
+// const debounce = (func: (...args:any[])=>void, delay: number) => {
+//     let timer: NodeJS.Timeout;
+//     return function(this:any,...args:any[]) {
+//         clearTimeout(timer);
+//         timer = setTimeout(() => func.apply(this, args), delay)
+//     }
+// }
 
   return (
     <>
