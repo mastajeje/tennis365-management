@@ -32,3 +32,16 @@
     padding:  10px 5px;
     font-size: 17px;
 }
+
+/* Button */
+.CommonButton{
+    border: 1px solid black;
+    background: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.CommonButton:hover{
+    background-color: #212529;
+    color:white;
+}

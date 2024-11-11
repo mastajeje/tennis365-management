@@ -1,6 +1,6 @@
 .CalLayout {
     margin: 0 auto;
-    background-color: gray;
+    /* background-color: gray; */
     max-width: 640px;
     padding: 8px;
 }

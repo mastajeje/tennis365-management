@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react';
 import styles from './styles/components.module.css';
 import SearchBar from './SearchBar';
 import {usePathname} from 'next/navigation';
+import Button from './Button';
 
 type MatchData = {
   aTeam: string[];
@@ -12,6 +13,8 @@ type MatchData = {
   matchDate: string;
   winner: string;
 };
+
+
 
 interface IResultProps {
   aTeam?: string[];
@@ -23,6 +26,11 @@ interface IResultProps {
   endAddingResult?: () => void;
   onPostMatch?: (matchData: MatchData) => Promise<any>;
 }
+
+const buttonStyle: React.CSSProperties = {
+    position: 'absolute',
+    marginLeft: '10px',
+    };
 
 export default function MatchItem({
   aTeam,
@@ -41,10 +49,6 @@ export default function MatchItem({
   const [scoreA, setScoreA] = useState<number>(0);
   const [scoreB, setScoreB] = useState<number>(0);
 
-  useEffect(()=>{
-      console.log(aTeam, bTeam, aScore, bScore)
-  },[])
-  //   const {date} = router.query;
   const matchDate = pathname.split('/')[2];
 
   const MAX_SCORE = 6;
@@ -66,14 +70,6 @@ export default function MatchItem({
       setScoreB(bScore);
     }
 
-    // return () => {
-    //     setPlayerA1('');
-    //     setPlayerA2('');
-    //     setPlayerB1('');
-    //     setPlayerB2('');
-    //     setScoreA(0);
-    //     setScoreB(0);
-    // }
   }, []);
 
   const handlePlayerA1 = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,9 +144,6 @@ export default function MatchItem({
   return (
     <li
       className={styles.MatchItem}
-      onClick={() => {
-        console.log(playerA1, playerA2, playerB1, playerB2, scoreA, scoreB);
-      }}
     >
       <div className={`${styles.col} ${styles.ATeam}`}>
         <div className={styles.PlayerName}>
@@ -203,6 +196,7 @@ export default function MatchItem({
               value={scoreB}
             />
           )}
+          <Button text={'삭제'} onClick={()=>{}} style={buttonStyle}/>
         </div>
         {isAddingResult ? (
           <div className={styles.ConfirmButtons}>
@@ -210,18 +204,14 @@ export default function MatchItem({
             <button onClick={handleAddResult}>확인</button>
           </div>
         ) : null}
+        
       </div>
       <div className={`${styles.col} ${styles.BTeam}`}>
         <div className={styles.PlayerName}>
           {bTeam ? (
             <h5>{bTeam[0]}</h5>
           ) : (
-            // <input
-            //   type="text"
-            //   placeholder="선수1"
-            //   onChange={handlePlayerB1}
-            //   value={playerB1}
-            // />
+
             <SearchBar
               onSearch={handlePlayerB1}
               keyword={playerB1}
@@ -233,12 +223,6 @@ export default function MatchItem({
           {bTeam ? (
             <h5>{bTeam[1]}</h5>
           ) : (
-            // <input
-            //   type="text"
-            //   placeholder="선수2"
-            //   onChange={handlePlayerB2}
-            //   value={playerB2}
-            // />
             <SearchBar
               onSearch={handlePlayerB2}
               keyword={playerB2}
