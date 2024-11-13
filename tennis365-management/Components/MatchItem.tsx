@@ -6,6 +6,7 @@ import {usePathname} from 'next/navigation';
 import Button from './Button';
 
 type MatchData = {
+  matchID?: string;
   aTeam: string[];
   bTeam: string[];
   aScore: number;
@@ -14,9 +15,8 @@ type MatchData = {
   winner: string;
 };
 
-
-
 interface IResultProps {
+  matchID?: string;
   aTeam?: string[];
   bTeam?: string[];
   aScore?: number;
@@ -28,11 +28,12 @@ interface IResultProps {
 }
 
 const buttonStyle: React.CSSProperties = {
-    position: 'absolute',
-    marginLeft: '10px',
-    };
+  position: 'absolute',
+  marginLeft: '10px',
+};
 
 export default function MatchItem({
+  matchID,
   aTeam,
   bTeam,
   aScore,
@@ -69,7 +70,6 @@ export default function MatchItem({
     if (bScore) {
       setScoreB(bScore);
     }
-
   }, []);
 
   const handlePlayerA1 = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -141,10 +141,18 @@ export default function MatchItem({
     }
   };
 
+  const handleDeleteMatch = async () => {
+    try {
+      const response = await fetch(`/api/win-rate/matches?match-id=${matchID}`, {
+        method: 'DELETE',
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <li
-      className={styles.MatchItem}
-    >
+    <li className={styles.MatchItem}>
       <div className={`${styles.col} ${styles.ATeam}`}>
         <div className={styles.PlayerName}>
           {aTeam ? (
@@ -196,7 +204,7 @@ export default function MatchItem({
               value={scoreB}
             />
           )}
-          <Button text={'삭제'} onClick={()=>{}} style={buttonStyle}/>
+          <Button text={'삭제'} onClick={handleDeleteMatch} style={buttonStyle} />
         </div>
         {isAddingResult ? (
           <div className={styles.ConfirmButtons}>
@@ -204,14 +212,12 @@ export default function MatchItem({
             <button onClick={handleAddResult}>확인</button>
           </div>
         ) : null}
-        
       </div>
       <div className={`${styles.col} ${styles.BTeam}`}>
         <div className={styles.PlayerName}>
           {bTeam ? (
             <h5>{bTeam[0]}</h5>
           ) : (
-
             <SearchBar
               onSearch={handlePlayerB1}
               keyword={playerB1}

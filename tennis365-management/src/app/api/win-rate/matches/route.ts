@@ -114,6 +114,23 @@ if(aScore !== null && aScore !== undefined && bScore !== null && bScore !== unde
 
 }
 
+export async function DELETE(req: Request) {
+    const {searchParams} = new URL(req.url);
+    const matchId = searchParams.get('match-id');
+   
+    if(matchId){
+        // 1. player_match 테이블에서 matches_id === matchId인 데이터 가져오기
+        // 2. 하나씩 is_winner가 true인지 확인 
+        // 3. true일 경우 해당 player의 승리수 -1 / false일 경우 해당 player의 패배수 -1
+        // 4. matches 테이블에서 id === matchId인 데이터 삭제
+
+        // const result = await query.delete_match(matchId); 
+        // return Response.json(result)
+    } else {
+        return Response.json({'message':'error no data found'})
+    }
+}
+
 const checkPlayers =async (playerNames: string[]) => {
 
     const result = await query.check_players_by_name(playerNames);

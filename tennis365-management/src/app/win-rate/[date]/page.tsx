@@ -110,6 +110,7 @@ useEffect(()=> {
             return (
               <MatchItem
                 key={matchID}
+                matchID={matchID}
                 aTeam={match.aTeam}
                 bTeam={match.bTeam}
                 aScore={match.aScore}
