@@ -25,6 +25,7 @@ interface IResultProps {
   matchDate?: string;
   endAddingResult?: () => void;
   onPostMatch?: (matchData: MatchData) => Promise<any>;
+  fetchMatchData: () => void;
 }
 
 const buttonStyle: React.CSSProperties = {
@@ -41,6 +42,7 @@ export default function MatchItem({
   isAddingResult,
   endAddingResult,
   onPostMatch,
+  fetchMatchData
 }: IResultProps) {
   const pathname = usePathname();
   const [playerA1, setPlayerA1] = useState<string>('');
@@ -142,10 +144,18 @@ export default function MatchItem({
   };
 
   const handleDeleteMatch = async () => {
+    // TODO: 삭제 요청 후 리스트가 업데이트 될때까지 딜레이가 있음
+    // post 요청과 같이 local state를 업데이트하는 방식으로 변경하면 반응이 빠를 것으로 예상
     try {
       const response = await fetch(`/api/win-rate/matches?match-id=${matchID}`, {
         method: 'DELETE',
       });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete match');
+        }
+        
+        fetchMatchData();
     } catch (error) {
       console.error(error);
     }

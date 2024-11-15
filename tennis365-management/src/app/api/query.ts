@@ -1,3 +1,5 @@
+import { match } from "assert";
+
 const {Pool} = require('pg');
 
 const pool = new Pool({
@@ -24,13 +26,21 @@ const query = {
         pool.query('INSERT INTO player_match (team, is_winner, matches_id, player_id) VALUES ($1, $2, $3, $4) RETURNING *', [team, isWinner, matches_id, player_id]), 
     update_player_win: (player_id: number) => 
         pool.query('UPDATE player SET wins = wins + 1, participation = participation + 1 WHERE id = $1', [player_id]),
-
     update_player_loss: (player_id: number) => 
         pool.query('UPDATE player SET losses = losses + 1, participation = participation + 1, debt = debt + 5000 WHERE id = $1', [player_id]),
+    decrease_player_win: (playerId: number) =>
+        pool.query('UPDATE player SET wins = wins - 1, participation = participation -1 WHERE id = $1', [playerId]),
+    decrease_player_loss: (playerId: number) =>
+        pool.query('UPDATE player SET losses = losses - 1, participation = participation -1 WHERE id = $1', [playerId]),
     check_players_by_name: (player_names: string[]) =>
         pool.query('SELECT player."name" FROM player WHERE player."name" = ANY($1)', [player_names]),
     insert_player: (player_name: string) =>
-        pool.query('INSERT INTO player ("name") VALUES ($1)',[player_name])
+        pool.query('INSERT INTO player ("name") VALUES ($1)',[player_name]),
+    get_player_by_match:(matchId: number) =>
+        pool.query('SELECT * FROM player_match WHERE matches_id = $1' ,[matchId]),
+    delete_match: (matchId: number) =>
+        pool.query('DELETE FROM matches WHERE id = $1', [matchId])
+
 }
 
 module.exports = query;

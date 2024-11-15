@@ -14,22 +14,6 @@ type MatchData = {
 };
 
 
-
-// const dummyMatchData = [
-//   {
-//     aTeam: ['김정진', '박진아'],
-//     bTeam: ['김승기', '박상미'],
-//     aScore: 6,
-//     bScore: 4,
-//   },
-//   {
-//     aTeam: ['이원우', '최건'],
-//     bTeam: ['김한결', '마민혁'],
-//     aScore: 6,
-//     bScore: 4,
-//   },
-// ];
-
 export default function DailyResultPage({
   params: {date},
 }: {
@@ -39,7 +23,7 @@ export default function DailyResultPage({
   const [matchData, setMatchData] = useState<MatchData[]>([]);
 
 
-  const fetchItems = async () => {
+  const fetchMatchData = async () => {
     try{
 
         const response = await fetch(`/api/win-rate/matches?date=${date}`,{
@@ -56,7 +40,7 @@ export default function DailyResultPage({
 
 useEffect(()=> {
 
-    fetchItems()
+    fetchMatchData()
 },[])
 
   
@@ -115,6 +99,7 @@ useEffect(()=> {
                 bTeam={match.bTeam}
                 aScore={match.aScore}
                 bScore={match.bScore}
+                fetchMatchData={fetchMatchData}
               />
             );
           })} 

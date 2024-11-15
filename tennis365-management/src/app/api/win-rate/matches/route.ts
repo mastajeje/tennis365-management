@@ -116,17 +116,38 @@ if(aScore !== null && aScore !== undefined && bScore !== null && bScore !== unde
 
 export async function DELETE(req: Request) {
     const {searchParams} = new URL(req.url);
-    const matchId = searchParams.get('match-id');
-   
+    const matchId = parseInt(searchParams.get('match-id') as string,10);
+    
+    type Player ={
+        id: number,
+        team: string,
+        is_winner: boolean,
+        matches_id:number,
+        player_id:number
+    }
     if(matchId){
         // 1. player_match 테이블에서 matches_id === matchId인 데이터 가져오기
+        const playersFromMatch = await query.get_player_by_match(matchId);
+            
         // 2. 하나씩 is_winner가 true인지 확인 
         // 3. true일 경우 해당 player의 승리수 -1 / false일 경우 해당 player의 패배수 -1
-        // 4. matches 테이블에서 id === matchId인 데이터 삭제
+        playersFromMatch.rows.forEach((player:Player) => {
+            if(player.is_winner){
+                query.decrease_player_win(player.player_id);
+            } else {
+                query.decrease_player_loss(player.player_id);
+            }
+        })
 
-        // const result = await query.delete_match(matchId); 
-        // return Response.json(result)
-    } else {
+       const isDeleted = await query.delete_match(matchId);
+
+       // 4. matches 테이블에서 id === matchId인 데이터 삭제
+       if(isDeleted.rowCount){
+        return Response.json({'message':'success'})
+       } else{
+        return Response.json({'message':'error no match deleted'})
+       }
+         } else {
         return Response.json({'message':'error no data found'})
     }
 }
