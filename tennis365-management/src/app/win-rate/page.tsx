@@ -20,6 +20,7 @@ const dummyDate = [
 import styles from './styles/CalMain.module.css'
 import DailyResult from '../../../Components/DailyResult';
 import { useEffect, useState } from 'react';
+import Modal from '../../../Components/Modal';
 // export const metadata: Metadata = {
 //     title: "승률 계산기",
 //   };
@@ -69,7 +70,6 @@ export default function WinningPercentageCal() {
         <header className={styles.CalMainHeader}>
         <h1>365 승률 계산기</h1>
         <div className="TargetDate">
-            {/* <span>2024년 8월</span> */}
             <div className="TargetYear">
                 <input type="number" name='year' onChange={handleTargetDateChange} value={targetYear}/>
                 <span>년</span>
@@ -78,6 +78,9 @@ export default function WinningPercentageCal() {
                 <input type="number" name='month' onChange={handleTargetDateChange}  value={targetMonth}/>
                 <span>월</span>
                 </div>
+        </div>
+        <div className="AddDateButton">
+            <button>날짜 추가</button>
         </div>
         </header>
         <div className="appBody">
@@ -91,7 +94,7 @@ export default function WinningPercentageCal() {
             </ul>
         </div>
 
-      
+      <Modal open={true} children={<></>}/>
 
     </main>
   );
