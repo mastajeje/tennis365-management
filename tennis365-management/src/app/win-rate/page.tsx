@@ -33,7 +33,7 @@ export default function WinningPercentageCal() {
     const [targetYear, setTargetYear] = useState<number>(2024);
     const [targetMonth, setTargetMonth] = useState<number>(9);
     const [matchDates, setMatchDates] = useState<string[]>([]);
-
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     useEffect(() => {
         getMatchDates(targetYear, targetMonth);
     },[])
@@ -56,13 +56,34 @@ export default function WinningPercentageCal() {
       });
 
       const data = await response.json();
-        console.log(data)
+      
        const dates = data.map((date: {date: string}) => date.date.split('T')[0]);
       setMatchDates(dates)
       if(!response.ok) throw new Error('Failed to add match')
     } catch (error) {
       console.error(error);
     }
+    }
+
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    }
+
+    const AddDateModalContent = () => {
+        return (
+            <div className={styles.AddDateModal}>
+                <h2>날짜 추가</h2>
+                <div >
+                    <input type="number" name="matchYear"/>
+                    <input type="number" name="matchMonth"/>
+                    <input type="number" name="matchDay"/>
+                </div>
+                <div>
+                    <button>추가</button>
+                    <button onClick={() => setIsModalOpen(false)}>취소</button>
+                </div>
+            </div>
+        )
     }
 
   return (
@@ -80,7 +101,7 @@ export default function WinningPercentageCal() {
                 </div>
         </div>
         <div className="AddDateButton">
-            <button>날짜 추가</button>
+            <button onClick={handleOpenModal}>날짜 추가</button>
         </div>
         </header>
         <div className="appBody">
@@ -94,7 +115,7 @@ export default function WinningPercentageCal() {
             </ul>
         </div>
 
-      <Modal open={true} children={<></>}/>
+      <Modal open={isModalOpen} children={AddDateModalContent()}/>
 
     </main>
   );

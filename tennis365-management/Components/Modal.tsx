@@ -22,7 +22,7 @@ export default function Modal({
 
     return(
         <dialog className={styles.Modal} ref={dialogRef}>
-            <div>Test</div>
+            {children}
         </dialog>
     )
 }
