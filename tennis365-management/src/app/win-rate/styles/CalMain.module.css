@@ -17,6 +17,17 @@
   margin: 0;
 }
 
+.AddDateInputBox{
+    display: flex;
+    gap: 5px;
+    margin: 10px 0px;
+}
+
+.AddDateInputBox input{
+    text-align: center;
+    padding: 4px 6px;
+    font-size: 2rem;
+}
 
 /* 경기결과 페이지 */
 .MatchContainer {

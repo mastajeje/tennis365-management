@@ -9,8 +9,7 @@ export async function GET(req:Request) {
     // 검색어에 해당하는 선수 목록을 반환
     try{
         const { searchParams } = new URL(req.url);
-        console.log(searchParams);
-        console.log(searchParams.get('keyword'));
+
         return NextResponse.json({'message':'success'},{status:200});
       
     } catch(error:any) {

@@ -42,6 +42,10 @@ export default function WinningPercentageCal() {
     day: currentDay,
   });
 
+  const getDaysInMonth = (year: number, month: number) => {
+    return new Date(year, month, 0).getDate();
+  }
+
   useEffect(() => {
     getMatchDates(targetYear, targetMonth);
   }, []);
@@ -82,24 +86,23 @@ export default function WinningPercentageCal() {
 
   const handleNewMatchDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
+    const daysInMonth = getDaysInMonth(newMatchDateObj.year, newMatchDateObj.month);
     const limitedValue = value.slice(0, name === 'year' ? 4 : 2); // Limit year to 4 digits, month and day to 2 digits
+
+    if(name === 'month' && parseInt(limitedValue) > 12 || parseInt(limitedValue) === 0) return;
+    if(name === 'day' && parseInt(limitedValue) > daysInMonth || parseInt(limitedValue) === 0) return;
+   
     setNewMatchDateObj((prevState) => ({
       ...prevState,
-      [name]: parseInt(limitedValue),
+      [name]: limitedValue  ? parseInt(limitedValue, 10) : "" , // Prevent NaN as value
     }));
   };
 
   const AddDateModalContent = () => {
-    const daysInMonth = new Date(
-      newMatchDateObj.year,
-      newMatchDateObj.month,
-      0
-    ).getDate();
-
     return (
       <div className={styles.AddDateModal}>
         <h2>날짜 추가</h2>
-        <div>
+        <div className={styles.AddDateInputBox}>
           <input
             type="number"
             min="2000"
@@ -119,7 +122,7 @@ export default function WinningPercentageCal() {
           <input
             type="number"
             min="1"
-            max={daysInMonth}
+            max='31'
             value={newMatchDateObj.day}
             name="day"
             onChange={handleNewMatchDateChange}
@@ -127,7 +130,13 @@ export default function WinningPercentageCal() {
         </div>
         <div>
           <button>추가</button>
-          <button onClick={() => setIsModalOpen(false)}>취소</button>
+          <button onClick={() => {
+            setNewMatchDateObj({
+                year: currentYear,
+                month: currentMonth,
+                day: currentDay,
+              })
+            setIsModalOpen(false)}}>취소</button>
         </div>
       </div>
     );
@@ -169,7 +178,7 @@ export default function WinningPercentageCal() {
         </ul>
       </div>
 
-      <Modal open={isModalOpen} children={AddDateModalContent()} />
+      {isModalOpen && <Modal open={isModalOpen} children={AddDateModalContent()} />}
     </main>
   );
 }
