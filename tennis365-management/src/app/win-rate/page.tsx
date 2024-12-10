@@ -71,9 +71,9 @@ export default function WinningPercentageCal() {
       );
 
       const data = await response.json();
-
-      const dates = data.map((date: {date: string}) => date.date.split('T')[0]);
-      setMatchDates(dates);
+      console.log(data)
+      const meetingDates = data.map((meetingDate : string) => meetingDate.split('T')[0]);
+      setMatchDates(meetingDates);
       if (!response.ok) throw new Error('Failed to add match');
     } catch (error) {
       console.error(error);
@@ -97,6 +97,21 @@ export default function WinningPercentageCal() {
       [name]: limitedValue  ? parseInt(limitedValue, 10) : "" , // Prevent NaN as value
     }));
   };
+
+  const handleAddNewMeetingDate = async () => {
+    const {year, month, day} = newMatchDateObj;
+     const response = await fetch('/api/win-rate/calendar', {
+        method: 'POST',
+        body: JSON.stringify({meetingDate: `${year}-${month}-${day}`}),
+    })
+    if(response.ok) {
+        setMatchDates(prevMatchDates => [...prevMatchDates, `${year}-${month}-${day}`]);
+        setTargetYear(year);
+        setTargetMonth(month);
+        setIsModalOpen(false);
+        getMatchDates(year, month);
+    }
+  }
 
   const AddDateModalContent = () => {
     return (
@@ -129,7 +144,7 @@ export default function WinningPercentageCal() {
           />
         </div>
         <div>
-          <button>추가</button>
+          <button onClick={handleAddNewMeetingDate}>추가</button>
           <button onClick={() => {
             setNewMatchDateObj({
                 year: currentYear,
