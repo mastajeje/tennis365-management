@@ -16,6 +16,7 @@ const query = {
       'SELECT player_match.matches_id, player_match.team, player_match.is_winner, matches.winner_team ,matches.a_score, matches.b_score,matches.time_added, player."name" FROM player_match join matches on player_match.matches_id = matches.id join player on player_match.player_id = player.id where matches.match_date = $1',
       [date]
     ),
+  check_meeting_date: (meetingDate: string) => pool.query('SELECT EXISTS (SELECT 1 FROM match_calendar WHERE date= $1)',[meetingDate]),
   get_match_dates: (year: number, month: number) =>
     pool.query(
       'SELECT DISTINCT date FROM match_calendar where extract(year from Date) = $1 and extract(month from DATE) = $2 ORDER BY Date',

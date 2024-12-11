@@ -44,7 +44,7 @@ export default function WinningPercentageCal() {
 
   const getDaysInMonth = (year: number, month: number) => {
     return new Date(year, month, 0).getDate();
-  }
+  };
 
   useEffect(() => {
     getMatchDates(targetYear, targetMonth);
@@ -71,8 +71,9 @@ export default function WinningPercentageCal() {
       );
 
       const data = await response.json();
-      console.log(data)
-      const meetingDates = data.map((meetingDate : string) => meetingDate.split('T')[0]);
+      const meetingDates = data.map(
+        (meetingDate: string) => meetingDate.split('T')[0]
+      );
       setMatchDates(meetingDates);
       if (!response.ok) throw new Error('Failed to add match');
     } catch (error) {
@@ -86,32 +87,48 @@ export default function WinningPercentageCal() {
 
   const handleNewMatchDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
-    const daysInMonth = getDaysInMonth(newMatchDateObj.year, newMatchDateObj.month);
+    const daysInMonth = getDaysInMonth(
+      newMatchDateObj.year,
+      newMatchDateObj.month
+    );
     const limitedValue = value.slice(0, name === 'year' ? 4 : 2); // Limit year to 4 digits, month and day to 2 digits
 
-    if(name === 'month' && parseInt(limitedValue) > 12 || parseInt(limitedValue) === 0) return;
-    if(name === 'day' && parseInt(limitedValue) > daysInMonth || parseInt(limitedValue) === 0) return;
-   
+    if (
+      (name === 'month' && parseInt(limitedValue) > 12) ||
+      parseInt(limitedValue) === 0
+    )
+      return;
+    if (
+      (name === 'day' && parseInt(limitedValue) > daysInMonth) ||
+      parseInt(limitedValue) === 0
+    )
+      return;
+
     setNewMatchDateObj((prevState) => ({
       ...prevState,
-      [name]: limitedValue  ? parseInt(limitedValue, 10) : "" , // Prevent NaN as value
+      [name]: limitedValue ? parseInt(limitedValue, 10) : '', // Prevent NaN as value
     }));
   };
 
   const handleAddNewMeetingDate = async () => {
     const {year, month, day} = newMatchDateObj;
-     const response = await fetch('/api/win-rate/calendar', {
-        method: 'POST',
-        body: JSON.stringify({meetingDate: `${year}-${month}-${day}`}),
-    })
-    if(response.ok) {
-        setMatchDates(prevMatchDates => [...prevMatchDates, `${year}-${month}-${day}`]);
-        setTargetYear(year);
-        setTargetMonth(month);
-        setIsModalOpen(false);
-        getMatchDates(year, month);
-    }
-  }
+    const response = await fetch('/api/win-rate/calendar', {
+      method: 'POST',
+      body: JSON.stringify({meetingDate: `${year}-${month}-${day}`}),
+    });
+    const {is_success} = await response.json();
+    if (!is_success) return alert('이미 추가된 날짜입니다.');
+
+    // reset modal
+    setMatchDates((prevMatchDates) => [
+      ...prevMatchDates,
+      `${year}-${month}-${day}`,
+    ]);
+    setTargetYear(year);
+    setTargetMonth(month);
+    setIsModalOpen(false);
+    getMatchDates(year, month);
+  };
 
   const AddDateModalContent = () => {
     return (
@@ -137,7 +154,7 @@ export default function WinningPercentageCal() {
           <input
             type="number"
             min="1"
-            max='31'
+            max="31"
             value={newMatchDateObj.day}
             name="day"
             onChange={handleNewMatchDateChange}
@@ -145,13 +162,18 @@ export default function WinningPercentageCal() {
         </div>
         <div>
           <button onClick={handleAddNewMeetingDate}>추가</button>
-          <button onClick={() => {
-            setNewMatchDateObj({
+          <button
+            onClick={() => {
+              setNewMatchDateObj({
                 year: currentYear,
                 month: currentMonth,
                 day: currentDay,
-              })
-            setIsModalOpen(false)}}>취소</button>
+              });
+              setIsModalOpen(false);
+            }}
+          >
+            취소
+          </button>
         </div>
       </div>
     );
@@ -193,7 +215,9 @@ export default function WinningPercentageCal() {
         </ul>
       </div>
 
-      {isModalOpen && <Modal open={isModalOpen} children={AddDateModalContent()} />}
+      {isModalOpen && (
+        <Modal open={isModalOpen} children={AddDateModalContent()} />
+      )}
     </main>
   );
 }

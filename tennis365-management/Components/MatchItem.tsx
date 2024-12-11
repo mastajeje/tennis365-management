@@ -25,7 +25,7 @@ interface IResultProps {
   matchDate?: string;
   endAddingResult?: () => void;
   onPostMatch?: (matchData: MatchData) => Promise<any>;
-  fetchMatchData: () => void;
+  fetchMatchData?: () => void;
 }
 
 const buttonStyle: React.CSSProperties = {
@@ -154,8 +154,10 @@ export default function MatchItem({
         if (!response.ok) {
             throw new Error('Failed to delete match');
         }
-        
-        fetchMatchData();
+
+        if(fetchMatchData){
+            fetchMatchData();
+        }
     } catch (error) {
       console.error(error);
     }
@@ -214,7 +216,7 @@ export default function MatchItem({
               value={scoreB}
             />
           )}
-          <Button text={'삭제'} onClick={handleDeleteMatch} style={buttonStyle} />
+          {!isAddingResult && <Button text={'삭제'} onClick={handleDeleteMatch} style={buttonStyle} />}
         </div>
         {isAddingResult ? (
           <div className={styles.ConfirmButtons}>
