@@ -1,7 +1,7 @@
 'use client';
 
 import styles from '../styles/CalMain.module.css';
-import MatchItem from '../../../../Components/MatchItem';
+import MatchItem from '../../../../components/MatchItem';
 import {useEffect, useState} from 'react';
 
 type MatchData = {

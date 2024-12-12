@@ -9,10 +9,10 @@
 'use client';
 
 // import { Metadata } from 'next';
-import styles from './styles/CalMain.module.css';
-import DailyResult from '../../../components/DailyResult';
+import styles from '@styles/CalMain.module.css';
+import DailyResult from '@components/DailyResult';
+import Modal from '@components/Modal';
 import {useEffect, useState} from 'react';
-import Modal from '../../../components/Modal';
 // export const metadata: Metadata = {
 //     title: "승률 계산기",
 //   };
