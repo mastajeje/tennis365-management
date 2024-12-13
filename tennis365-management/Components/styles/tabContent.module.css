@@ -1,0 +1,94 @@
+/* meeting day list */
+.CalLayout {
+    margin: 0 auto;
+    /* background-color: gray; */
+    max-width: 640px;
+    padding: 8px;
+  }
+
+.TargetDate{
+    display: flex;
+    gap: 8px;
+}
+
+.dateInput{
+    text-align: center;
+    padding: 2px 4px;
+    font-size: 18px;
+}
+
+.AddDateButton{
+    width: 100%;
+    background: white;
+    border: 1px solid var(--primary-blue);
+    border-radius: 6px;
+    color: var(--primary-blue);
+    margin-top: 16px;
+    cursor: pointer;
+}
+
+.AddDateButton:hover{
+    background: rgba(30,116,253, 0.15);
+
+}
+  
+  /* 승률 계산 메인 페이지 */
+  .CalMainHeader {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    border-top: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
+  }
+  /* Chrome, Safari, Edge, Opera */
+  .AddDateModal input::-webkit-outer-spin-button,
+  .AddDateModal input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  .AddDateInputBox{
+      display: flex;
+      gap: 5px;
+      margin: 10px 0px;
+  }
+  
+  .AddDateInputBox input{
+      text-align: center;
+      padding: 4px 6px;
+      font-size: 2rem;
+  }
+  
+  /* 경기결과 페이지 */
+  .MatchContainer {
+    border-top: 1px solid #e1e1e1;
+    padding-left: 0;
+  }
+  
+  .MatchContainer > li {
+    position: relative;
+  }
+  
+  .MatchContainer > li:after {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: #e1e1e1;
+  }
+  
+  .ResultsHeader {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .AddResult {
+    width: 120px;
+    background: none;
+    border: 1px solid white;
+    margin: 10px 0;
+  }
+  

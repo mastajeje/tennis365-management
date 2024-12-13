@@ -9,7 +9,7 @@
 'use client';
 
 // import { Metadata } from 'next';
-import styles from '@styles/CalMain.module.css';
+import styles from '../styles/tabContent.module.css';
 import DailyResult from '@components/DailyResult';
 import Modal from '@components/Modal';
 import {useEffect, useState} from 'react';
@@ -50,16 +50,43 @@ export default function WinningPercentageCal() {
     getMatchDates(targetYear, targetMonth);
   }, []);
 
+
+  const processDateInput = (value: string, name: string):string|void => {
+    const limitedValue = value.slice(0, name === 'year' ? 4 : 2); // Limit year to 4 digits, month and day to 2 digits
+
+    if (
+      (name === 'month' && parseInt(limitedValue) > 12) ||
+      parseInt(limitedValue) === 0
+    )
+      return;
+
+    if (name === 'day') {
+      const daysInMonth = getDaysInMonth(
+        newMatchDateObj.year,
+        newMatchDateObj.month
+      );
+      if (parseInt(limitedValue) > daysInMonth || parseInt(limitedValue) === 0)
+        return;
+    }
+    return limitedValue;
+  };
+
   const handleTargetDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
-    if (name === 'year') {
-      setTargetYear(parseInt(value));
-      getMatchDates(parseInt(value), targetMonth);
-    } else {
-      setTargetMonth(parseInt(value));
-      getMatchDates(targetYear, parseInt(value));
+    const limitedValue = processDateInput(value, name);
+    if(limitedValue === undefined)return
+
+        if (name === 'year') {
+            setTargetYear(limitedValue ? parseInt(limitedValue) : 0);
+            getMatchDates(parseInt(limitedValue), targetMonth);
+          } else {
+            setTargetMonth(limitedValue ? parseInt(limitedValue) : 0);
+            getMatchDates(targetYear, parseInt(limitedValue));
+          }
+      
     }
-  };
+
+   
 
   const getMatchDates = async (year: number, month: number) => {
     try {
@@ -85,24 +112,12 @@ export default function WinningPercentageCal() {
     setIsModalOpen(true);
   };
 
+
+
   const handleNewMatchDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
-    const daysInMonth = getDaysInMonth(
-      newMatchDateObj.year,
-      newMatchDateObj.month
-    );
-    const limitedValue = value.slice(0, name === 'year' ? 4 : 2); // Limit year to 4 digits, month and day to 2 digits
 
-    if (
-      (name === 'month' && parseInt(limitedValue) > 12) ||
-      parseInt(limitedValue) === 0
-    )
-      return;
-    if (
-      (name === 'day' && parseInt(limitedValue) > daysInMonth) ||
-      parseInt(limitedValue) === 0
-    )
-      return;
+    const limitedValue = processDateInput(value, name);
 
     setNewMatchDateObj((prevState) => ({
       ...prevState,
@@ -124,6 +139,11 @@ export default function WinningPercentageCal() {
       ...prevMatchDates,
       `${year}-${month}-${day}`,
     ]);
+    setNewMatchDateObj({
+      year: currentYear,
+      month: currentMonth,
+      day: currentDay,
+    });
     setTargetYear(year);
     setTargetMonth(month);
     setIsModalOpen(false);
@@ -180,14 +200,16 @@ export default function WinningPercentageCal() {
   };
 
   return (
-    <main className={styles.CalMain}>
+    <div>
       <header className={styles.CalMainHeader}>
-        <h1>365 승률 계산기</h1>
-        <div className="TargetDate">
+        <div className={styles.TargetDate}>
           <div className="TargetYear">
             <input
               type="number"
+              className={styles.dateInput}
               name="year"
+              min="2000"
+              max="3000"
               onChange={handleTargetDateChange}
               value={targetYear}
             />
@@ -197,15 +219,19 @@ export default function WinningPercentageCal() {
             <input
               type="number"
               name="month"
+              className={styles.dateInput}
+              min="1"
+              max="12"
               onChange={handleTargetDateChange}
               value={targetMonth}
             />
             <span>월</span>
           </div>
         </div>
-        <div className="AddDateButton">
-          <button onClick={handleOpenModal}>날짜 추가</button>
-        </div>
+
+        <button className={styles.AddDateButton} onClick={handleOpenModal}>
+          날짜 추가
+        </button>
       </header>
       <div className="appBody">
         <ul>
@@ -218,6 +244,6 @@ export default function WinningPercentageCal() {
       {isModalOpen && (
         <Modal open={isModalOpen} children={AddDateModalContent()} />
       )}
-    </main>
+    </div>
   );
 }

@@ -1,52 +1,99 @@
-.col{
-    flex: 1 0 0%;
+.col {
+  flex: 1 0 0%;
 }
 
 /* Match List */
-.MatchContainer{
-    padding: 0;
+.MatchContainer {
+  padding: 0;
 }
-.MatchItem{
-    display: flex;
-    align-items: center;
-}
-
-.ATeam{
-    text-align: left;
+.MatchItem {
+  display: flex;
+  align-items: center;
 }
 
-.BTeam{
-    text-align: right;
+.ATeam {
+  text-align: left;
 }
 
-.MatchScore{
-    text-align: center;
+.BTeam {
+  text-align: right;
 }
 
-.ScoreInput{
-    width: 40px;
-    height: 40px;
+.MatchScore {
+  text-align: center;
 }
 
-.PlayerName{
-    padding:  10px 5px;
-    font-size: 17px;
+.ScoreInput {
+  width: 40px;
+  height: 40px;
+}
+
+.PlayerName {
+  padding: 10px 5px;
+  font-size: 17px;
 }
 
 /* Button */
-.CommonButton{
-    border: 1px solid black;
-    background: none;
-    border-radius: 5px;
-    cursor: pointer;
+.CommonButton {
+  border: 1px solid black;
+  background: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.CommonButton:hover{
-    background-color: #212529;
-    color:white;
+.CommonButton:hover {
+  background-color: #212529;
+  color: white;
 }
 
 /* Modal */
 .Modal {
-    margin:auto
+  margin: auto;
+  border: none;
+  border-radius: 16px;
+}
+
+/* Tab panel */
+.TabLabels {
+  display: flex;
+  width: 100%;
+  padding-left: 0px;
+}
+
+.TabLabel {
+  list-style: none;
+  flex: 1;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 6px 10px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4f5050;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out,
+    background-color 0.3s ease-in-out;
+}
+
+.Active {
+  color: #1e7dfd;
+  border-bottom: 2px solid #1e7dfd;
+}
+
+/* Daily Result */
+.MeetingDay {
+  display: flex;
+  font-size: 20px;
+  padding: 10px 0;
+  justify-content: center;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.MeetingDay a {
+  text-decoration: none;
+  color: black;
 }
