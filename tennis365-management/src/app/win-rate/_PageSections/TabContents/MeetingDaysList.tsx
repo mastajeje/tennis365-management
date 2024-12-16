@@ -9,9 +9,9 @@
 'use client';
 
 // import { Metadata } from 'next';
-import styles from '../styles/tabContent.module.css';
-import DailyResult from '@components/DailyResult';
-import Modal from '@components/Modal';
+import styles from '../../styles/TabContent.module.css';
+import DailyResult from '@/components/DailyResult';
+import Modal from '@/components/Modal';
 import {useEffect, useState} from 'react';
 // export const metadata: Metadata = {
 //     title: "승률 계산기",
@@ -244,6 +244,7 @@ export default function WinningPercentageCal() {
       {isModalOpen && (
         <Modal open={isModalOpen} children={AddDateModalContent()} />
       )}
+
     </div>
   );
 }

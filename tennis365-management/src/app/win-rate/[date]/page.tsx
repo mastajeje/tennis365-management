@@ -1,8 +1,9 @@
 'use client';
 
 import styles from '../styles/CalMain.module.css';
-import MatchItem from '../../../../components/MatchItem';
+import MatchItem from '../../../components/MatchItem';
 import {useEffect, useState} from 'react';
+import Button from '@/components/Button';
 
 type MatchData = {
   aTeam: string[];
@@ -13,6 +14,15 @@ type MatchData = {
   winner: string;
 };
 
+
+
+    const buttonStyle: React.CSSProperties = {
+        'width': '100%',
+        'background': 'white',
+        'border': '1px solid var(--primary-blue)',
+        'borderRadius': '6px',
+        'marginTop': '16px'
+      };
 
 export default function DailyResultPage({
   params: {date},
@@ -79,7 +89,7 @@ useEffect(()=> {
 
   return (
     <div>
-      <header className={styles.ResultsHeader}>
+      <header className={styles.MatchResultsHeader}>
         <span>{date} 경기결과 페이지</span>
       </header>
       <div className="ResultsBody">
@@ -114,9 +124,10 @@ useEffect(()=> {
             
           />
         ) : (
-          <button className={styles.AddResult} onClick={handleAddResult}>
-            + 경기결과 추가
-          </button>
+        //   <button className={styles.AddResult} onClick={handleAddResult}>
+        //     + 경기결과 추가
+        //   </button>
+        <Button onClick={handleAddResult} text="+ 경기결과 추가" buttonColor='#1e74fd' style={buttonStyle}/>
         )}
       </div>
     </div>

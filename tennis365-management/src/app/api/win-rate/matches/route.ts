@@ -130,12 +130,13 @@ export async function DELETE(req: Request) {
         const playersFromMatch = await query.get_player_by_match(matchId);
             
         // 2. 하나씩 is_winner가 true인지 확인 
-        // 3. true일 경우 해당 player의 승리수 -1 / false일 경우 해당 player의 패배수 -1
+        // 3. true일 경우 해당 player의 승리수 -1 / (false일 경우 해당 player의 패배수 -1 && debt -5000)
         playersFromMatch.rows.forEach((player:Player) => {
             if(player.is_winner){
                 query.decrease_player_win(player.player_id);
             } else {
                 query.decrease_player_loss(player.player_id);
+                query.decrease_player_debt(player.player_id);
             }
         })
 

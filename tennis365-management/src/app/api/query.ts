@@ -16,7 +16,10 @@ const query = {
       'SELECT player_match.matches_id, player_match.team, player_match.is_winner, matches.winner_team ,matches.a_score, matches.b_score,matches.time_added, player."name" FROM player_match join matches on player_match.matches_id = matches.id join player on player_match.player_id = player.id where matches.match_date = $1',
       [date]
     ),
-  check_meeting_date: (meetingDate: string) => pool.query('SELECT EXISTS (SELECT 1 FROM match_calendar WHERE date= $1)',[meetingDate]),
+  check_meeting_date: (meetingDate: string) =>
+    pool.query('SELECT EXISTS (SELECT 1 FROM match_calendar WHERE date= $1)', [
+      meetingDate,
+    ]),
   get_match_dates: (year: number, month: number) =>
     pool.query(
       'SELECT DISTINCT date FROM match_calendar where extract(year from Date) = $1 and extract(month from DATE) = $2 ORDER BY Date',
@@ -77,6 +80,10 @@ const query = {
       'UPDATE player SET losses = losses - 1, participation = participation -1 WHERE id = $1',
       [playerId]
     ),
+  decrease_player_debt: (playerId: number) =>
+    pool.query('UPDATE player SET debt = debt - 5000 WHERE id = $1', [
+      playerId,
+    ]),
   check_players_by_name: (player_names: string[]) =>
     pool.query(
       'SELECT player."name" FROM player WHERE player."name" = ANY($1)',
@@ -88,6 +95,8 @@ const query = {
     pool.query('SELECT * FROM player_match WHERE matches_id = $1', [matchId]),
   delete_match: (matchId: number) =>
     pool.query('DELETE FROM matches WHERE id = $1', [matchId]),
+  get_results: () => pool.query('SELECT *, CASE WHEN participation > 0 then ROUND((wins::float / participation * 100)::NUMERIC, 2)  ELSE 0 END AS win_rate FROM player'),
+  get_results_over_30: () => pool.query('SELECT id, wins, losses, participation, player."name", CASE WHEN participation > 0 then ROUND((wins::float / participation * 100)::NUMERIC, 2)  ELSE 0 END AS win_rate  FROM player WHERE participation >= 30 order by win_rate desc'),
 };
 
 module.exports = query;

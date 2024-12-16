@@ -2,15 +2,6 @@
   flex: 1 0 0%;
 }
 
-/* Match List */
-.MatchContainer {
-  padding: 0;
-}
-.MatchItem {
-  display: flex;
-  align-items: center;
-}
-
 .ATeam {
   text-align: left;
 }
@@ -97,3 +88,50 @@
   text-decoration: none;
   color: black;
 }
+
+
+/* Table */
+.Table {
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.4rem;
+    text-align: center;
+    border-bottom: 2px solid #e1e1e1;
+    border-collapse: collapse;
+  }
+
+  .Table tr {
+    border-width: 0;
+    border-color: #e1e1e1;
+  }
+
+  .Table tr th  {
+    padding: 12px;
+    border-top: 1px solid #e1e1e1;
+  }
+
+  .Table td {
+    padding: 12px;
+    border-top: 1px solid #e1e1e1;
+  }
+  
+  .Table tbody tr:nth-child(odd) {
+    background: #f2f2f2;
+  }
+
+  /* Match Item */
+  .MatchItem{
+    display: flex;
+    align-items: center;
+  }
+
+  .ConfirmButtons{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .Score{
+    font-size: 32px;
+  }

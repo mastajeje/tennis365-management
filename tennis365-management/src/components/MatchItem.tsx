@@ -31,6 +31,7 @@ interface IResultProps {
 const buttonStyle: React.CSSProperties = {
   position: 'absolute',
   marginLeft: '10px',
+  marginTop: '13px'
 };
 
 export default function MatchItem({
@@ -168,7 +169,7 @@ export default function MatchItem({
       <div className={`${styles.col} ${styles.ATeam}`}>
         <div className={styles.PlayerName}>
           {aTeam ? (
-            <h5>{aTeam[0]}</h5>
+            <h4>{aTeam[0]}</h4>
           ) : (
             <SearchBar
               onSearch={handlePlayerA1}
@@ -179,7 +180,7 @@ export default function MatchItem({
         </div>
         <div className={styles.PlayerName}>
           {aTeam ? (
-            <h5>{aTeam[1]}</h5>
+            <h4>{aTeam[1]}</h4>
           ) : (
             <SearchBar
               onSearch={handlePlayerA2}
@@ -192,7 +193,7 @@ export default function MatchItem({
       <div className={`${styles.col} ${styles.MatchScore}`}>
         <div>
           {aScore !== undefined ? (
-            <span>{aScore}</span>
+            <span className={styles.Score}>{aScore}</span>
           ) : (
             <input
               className={styles.ScoreInput}
@@ -205,7 +206,7 @@ export default function MatchItem({
           )}
           <span> VS </span>
           {bScore !== undefined ? (
-            <span>{bScore}</span>
+            <span className={styles.Score}>{bScore}</span>
           ) : (
             <input
               className={styles.ScoreInput}
@@ -220,15 +221,17 @@ export default function MatchItem({
         </div>
         {isAddingResult ? (
           <div className={styles.ConfirmButtons}>
-            <button onClick={endAddingResult}>취소</button>
-            <button onClick={handleAddResult}>확인</button>
+            {/* <button onClick={endAddingResult}>취소</button>
+            <button onClick={handleAddResult}>확인</button> */}
+            <Button text={'취소'} onClick={endAddingResult} buttonColor={'#1e74fd'} />  
+            <Button text={'확인'} onClick={handleAddResult} buttonColor={'#1e74fd'} />
           </div>
         ) : null}
       </div>
       <div className={`${styles.col} ${styles.BTeam}`}>
         <div className={styles.PlayerName}>
           {bTeam ? (
-            <h5>{bTeam[0]}</h5>
+            <h4>{bTeam[0]}</h4>
           ) : (
             <SearchBar
               onSearch={handlePlayerB1}
@@ -239,7 +242,7 @@ export default function MatchItem({
         </div>
         <div className={styles.PlayerName}>
           {bTeam ? (
-            <h5>{bTeam[1]}</h5>
+            <h4>{bTeam[1]}</h4>
           ) : (
             <SearchBar
               onSearch={handlePlayerB2}
