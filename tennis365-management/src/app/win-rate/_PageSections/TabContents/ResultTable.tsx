@@ -1,7 +1,7 @@
 'use client';
 
 import TotalResults from '../TableContents/TotalResults';
-import styles from '../../styles/TabContent.module.css';
+import styles from '../../styles/PageSections.module.css';
 import { useState } from 'react';
 import ResultOver30 from '../TableContents/ResultOver30';
 import Rankings from '../TableContents/Rankings';

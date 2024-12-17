@@ -1,3 +1,5 @@
+import { AuthProvider } from '../context/AuthContext';
+import WinRateHeader from './_PageSections/WinRateHeader';
 import styles from './styles/CalMain.module.css';
 
 export default function RootLayout({
@@ -12,16 +14,13 @@ export default function RootLayout({
     padding: '0 8px',
   };
 
+
   return (
+    <AuthProvider>
     <div className={styles.CalMain} style={layoutStyle}>
-      <div className={styles.CalMainHeader}>
-        <div className={styles.HeaderLogo}>Tennis 365</div>
-        <h1>365 승률 계산기</h1>
-        <div className={styles.HeaderButton}>
-          <img src="/images/LockIcon.svg" alt="lock icon" />
-        </div>
-      </div>
+      <WinRateHeader/>
       <div>{children}</div>
     </div>
+    </AuthProvider>
   );
 }

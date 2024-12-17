@@ -29,15 +29,6 @@ export default function winningRatePage (){
     ]
     return (
         <main className={styles.CalMain}>
-            {/* <div className={styles.CalMainHeader}>
-            <div className={styles.HeaderLogo}>
-                Tennis 365
-            </div>
-             <h1>365 승률 계산기</h1>
-             <div className={styles.HeaderButton}>
-                <img src="/images/LockIcon.svg" alt="lock icon" />
-             </div>
-            </div> */}
             <TabPanel tabs={tabs}/>
         </main>
     )

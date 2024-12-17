@@ -8,11 +8,13 @@
 
 'use client';
 
+import Button from '@/components/Button';
 // import { Metadata } from 'next';
-import styles from '../../styles/TabContent.module.css';
+import styles from '../../styles/PageSections.module.css';
 import DailyResult from '@/components/DailyResult';
 import Modal from '@/components/Modal';
 import {useEffect, useState} from 'react';
+import { useAuth } from '@/app/context/AuthContext';
 // export const metadata: Metadata = {
 //     title: "승률 계산기",
 //   };
@@ -26,16 +28,19 @@ type DateObj = {
 // typescript 예시
 // export default function WinningPercentageCal({name, score, date: IResultProps}) {
 export default function WinningPercentageCal() {
+
   const today = new Date();
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth() + 1;
   const currentDay = today.getDate();
 
-  // 데이트 픽커를 적용하기전 임시조치
+  const {isAuthenticated} = useAuth();
+
   const [targetYear, setTargetYear] = useState<number>(currentYear);
   const [targetMonth, setTargetMonth] = useState<number>(currentMonth);
   const [matchDates, setMatchDates] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    // const [isAuthentiCated, setIsAuthenticated] = useState<boolean>(false);
   const [newMatchDateObj, setNewMatchDateObj] = useState<DateObj>({
     year: currentYear,
     month: currentMonth,
@@ -48,10 +53,11 @@ export default function WinningPercentageCal() {
 
   useEffect(() => {
     getMatchDates(targetYear, targetMonth);
+    
+
   }, []);
 
-
-  const processDateInput = (value: string, name: string):string|void => {
+  const processDateInput = (value: string, name: string): string | void => {
     const limitedValue = value.slice(0, name === 'year' ? 4 : 2); // Limit year to 4 digits, month and day to 2 digits
 
     if (
@@ -74,19 +80,16 @@ export default function WinningPercentageCal() {
   const handleTargetDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
     const limitedValue = processDateInput(value, name);
-    if(limitedValue === undefined)return
+    if (limitedValue === undefined) return;
 
-        if (name === 'year') {
-            setTargetYear(limitedValue ? parseInt(limitedValue) : 0);
-            getMatchDates(parseInt(limitedValue), targetMonth);
-          } else {
-            setTargetMonth(limitedValue ? parseInt(limitedValue) : 0);
-            getMatchDates(targetYear, parseInt(limitedValue));
-          }
-      
+    if (name === 'year') {
+      setTargetYear(limitedValue ? parseInt(limitedValue) : 0);
+      getMatchDates(parseInt(limitedValue), targetMonth);
+    } else {
+      setTargetMonth(limitedValue ? parseInt(limitedValue) : 0);
+      getMatchDates(targetYear, parseInt(limitedValue));
     }
-
-   
+  };
 
   const getMatchDates = async (year: number, month: number) => {
     try {
@@ -111,8 +114,6 @@ export default function WinningPercentageCal() {
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
-
-
 
   const handleNewMatchDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
@@ -150,6 +151,15 @@ export default function WinningPercentageCal() {
     getMatchDates(year, month);
   };
 
+  const handleResetModal = () => {
+    setNewMatchDateObj({
+      year: currentYear,
+      month: currentMonth,
+      day: currentDay,
+    });
+    setIsModalOpen(false);
+  };
+
   const AddDateModalContent = () => {
     return (
       <div className={styles.AddDateModal}>
@@ -180,20 +190,11 @@ export default function WinningPercentageCal() {
             onChange={handleNewMatchDateChange}
           />
         </div>
-        <div>
-          <button onClick={handleAddNewMeetingDate}>추가</button>
-          <button
-            onClick={() => {
-              setNewMatchDateObj({
-                year: currentYear,
-                month: currentMonth,
-                day: currentDay,
-              });
-              setIsModalOpen(false);
-            }}
-          >
-            취소
-          </button>
+        <div className={styles.AddDateButtons}>
+            <Button text={'취소'} onClick={handleResetModal} />
+            <Button text={'추가'} onClick={handleAddNewMeetingDate} buttonColor='#1e74fd' />
+          {/* <button onClick={handleResetModal}>취소</button> */}
+          {/* <button onClick={handleAddNewMeetingDate}>추가</button> */}
         </div>
       </div>
     );
@@ -229,9 +230,9 @@ export default function WinningPercentageCal() {
           </div>
         </div>
 
-        <button className={styles.AddDateButton} onClick={handleOpenModal}>
+        {isAuthenticated &&<button className={styles.AddDateButton} onClick={handleOpenModal}>
           날짜 추가
-        </button>
+        </button>}
       </header>
       <div className="appBody">
         <ul>
@@ -244,7 +245,6 @@ export default function WinningPercentageCal() {
       {isModalOpen && (
         <Modal open={isModalOpen} children={AddDateModalContent()} />
       )}
-
     </div>
   );
 }

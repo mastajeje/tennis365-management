@@ -58,6 +58,12 @@
       padding: 4px 6px;
       font-size: 2rem;
   }
+
+  .AddDateButtons{
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
   
   /* 경기결과 페이지 */
   .MatchContainer {
@@ -116,4 +122,26 @@
 .Active{
     background-color: white;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* Win rate header */
+.WinRateHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+}
+
+.HeaderLogo{
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    cursor: pointer;
+}
+
+.HeaderButton{
+    height: 56px;
+    display: flex;
+    padding: 12px;
+    cursor: pointer;
 }

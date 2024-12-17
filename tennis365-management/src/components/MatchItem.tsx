@@ -4,6 +4,7 @@ import styles from './styles/components.module.css';
 import SearchBar from './SearchBar';
 import {usePathname} from 'next/navigation';
 import Button from './Button';
+import { useAuth } from '@/app/context/AuthContext';
 
 type MatchData = {
   matchID?: string;
@@ -46,6 +47,7 @@ export default function MatchItem({
   fetchMatchData
 }: IResultProps) {
   const pathname = usePathname();
+  const {isAuthenticated} = useAuth();
   const [playerA1, setPlayerA1] = useState<string>('');
   const [playerA2, setPlayerA2] = useState<string>('');
   const [playerB1, setPlayerB1] = useState<string>('');
@@ -217,7 +219,7 @@ export default function MatchItem({
               value={scoreB}
             />
           )}
-          {!isAddingResult && <Button text={'삭제'} onClick={handleDeleteMatch} style={buttonStyle} />}
+          {!isAddingResult && isAuthenticated && <Button text={'삭제'} onClick={handleDeleteMatch} style={buttonStyle} />}
         </div>
         {isAddingResult ? (
           <div className={styles.ConfirmButtons}>

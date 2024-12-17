@@ -15,3 +15,15 @@ export const getResults = async (isParticipationOver30:boolean) => {
         // setResults(results.results.sort((a:IResultData, b:IResultData) => a.name > b.name ? 1: -1))
     }
 }
+
+// export const validateAuth = async () => {
+//     const response = await fetch('/api/validate')
+//     const results = await response.json();
+
+//     if(results.authenticated){
+//         return true;
+//     } else {
+//         return false;
+//     }
+
+// }
