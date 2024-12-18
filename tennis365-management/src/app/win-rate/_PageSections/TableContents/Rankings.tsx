@@ -36,7 +36,7 @@ export default function Rankings() {
     const resultsData = await getResults(false);
 
     setWinRateRankings(
-      resultsData
+      resultsData.filter((item: IResultData) => item.participation > 30)
         .sort((a: IResultData, b: IResultData) =>
           a.win_rate > b.win_rate ? -1 : 1
         )

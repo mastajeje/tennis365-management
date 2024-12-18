@@ -33,9 +33,9 @@ const renderTable = (activeTab: number) => {
   return (
     <div>
       <ul className={styles.TableTabs}>
-        <li className={`${styles.TableTab} ${activeTab === 0 ? styles.Active : ''}`} data-index='0' onClick={handleClickTab}>1회 이상 참가자</li>
-        <li className={`${styles.TableTab} ${activeTab === 1 ? styles.Active : ''}`} data-index='1' onClick={handleClickTab}>30회 이상 참가자</li>
-        <li className={`${styles.TableTab} ${activeTab === 2 ? styles.Active : ''}`} data-index='2' onClick={handleClickTab}>랭킹</li>
+        <li className={`${styles.TableTab} ${activeTab === 0 ? styles.Active : ''}`} data-index='0' onClick={handleClickTab}>1번 코트 참가 현황</li>
+        <li className={`${styles.TableTab} ${activeTab === 1 ? styles.Active : ''}`} data-index='1' onClick={handleClickTab}>30회 이상 참가자 랭킹</li>
+        <li className={`${styles.TableTab} ${activeTab === 2 ? styles.Active : ''}`} data-index='2' onClick={handleClickTab}>종합 랭킹</li>
       </ul>
       <div>
         {renderTable(activeTab)}

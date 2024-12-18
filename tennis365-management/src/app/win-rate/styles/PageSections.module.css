@@ -37,8 +37,8 @@
     display: flex;
     flex-direction: column;
     padding: 16px;
-    border-top: 1px solid #e1e1e1;
-    border-bottom: 1px solid #e1e1e1;
+    border-top: 1px solid var(--primary-gray);
+    border-bottom: 1px solid var(--primary-gray);
   }
   /* Chrome, Safari, Edge, Opera */
   .AddDateModal input::-webkit-outer-spin-button,
@@ -67,7 +67,7 @@
   
   /* 경기결과 페이지 */
   .MatchContainer {
-    border-top: 1px solid #e1e1e1;
+    border-top: 1px solid var(--primary-gray);
     padding-left: 0;
   }
   
@@ -83,7 +83,7 @@
     right: 0;
     bottom: 0;
     height: 1px;
-    background: #e1e1e1;
+    background: var(--primary-gray);
   }
   
   /* .ResultsHeader {
@@ -133,10 +133,15 @@
 }
 
 .HeaderLogo{
-    font-size: 20px;
-    font-weight: 700;
-    font-style: italic;
+    width: 48px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-left:12px;
     cursor: pointer;
+}
+
+.HeaderLogo img{
+    transform: scale(1.5);
 }
 
 .HeaderButton{
@@ -144,4 +149,26 @@
     display: flex;
     padding: 12px;
     cursor: pointer;
+}
+
+.PasswordModal{
+    width: 350px;
+}
+.PasswordModal h2{
+    text-align: center;
+}
+.PasswordText{
+    padding: 5px 0px;
+    line-height: 32px;
+}
+
+.PasswordInput{
+    width: 100%;
+    margin: 8px 0;
+}
+
+.PasswordButtons{
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
 }

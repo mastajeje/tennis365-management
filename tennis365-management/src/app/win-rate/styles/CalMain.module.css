@@ -23,12 +23,12 @@
 
 .MatchContainer {
     padding: 0;
-    border-top: 1px solid #e1e1e1;
-    border-bottom: 1px solid #e1e1e1;
+    border-top: 1px solid var(--primary-gray);
+    border-bottom: 1px solid var(--primary-gray);
 }
 
 .MatchContainer > li {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #e1e1e1;
+    border-bottom: 1px solid var(--primary-gray);
 }

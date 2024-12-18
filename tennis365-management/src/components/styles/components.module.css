@@ -81,7 +81,7 @@
   font-size: 20px;
   padding: 10px 0;
   justify-content: center;
-  border-bottom: 1px solid #e1e1e1;
+  border-bottom: 1px solid var(--primary-gray);
 }
 
 .MeetingDay a {
@@ -96,23 +96,23 @@
     font-size: 14px;
     line-height: 1.4rem;
     text-align: center;
-    border-bottom: 2px solid #e1e1e1;
+    border-bottom: 2px solid var(--primary-gray);
     border-collapse: collapse;
   }
 
   .Table tr {
     border-width: 0;
-    border-color: #e1e1e1;
+    border-color: var(--primary-gray);
   }
 
   .Table tr th  {
     padding: 12px;
-    border-top: 1px solid #e1e1e1;
+    border-top: 1px solid var(--primary-gray);
   }
 
   .Table td {
     padding: 12px;
-    border-top: 1px solid #e1e1e1;
+    border-top: 1px solid var(--primary-gray);
   }
   
   .Table tbody tr:nth-child(odd) {

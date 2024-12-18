@@ -4,6 +4,7 @@ import styles from '../styles/CalMain.module.css';
 import MatchItem from '../../../components/MatchItem';
 import {useEffect, useState} from 'react';
 import Button from '@/components/Button';
+import { PRIMARY_BLUE } from '@/app/constants';
 
 type MatchData = {
   aTeam: string[];
@@ -127,7 +128,7 @@ useEffect(()=> {
         //   <button className={styles.AddResult} onClick={handleAddResult}>
         //     + 경기결과 추가
         //   </button>
-        <Button onClick={handleAddResult} text="+ 경기결과 추가" buttonColor='#1e74fd' style={buttonStyle}/>
+        <Button onClick={handleAddResult} text="+ 경기결과 추가" buttonColor={PRIMARY_BLUE} style={buttonStyle}/>
         )}
       </div>
     </div>
