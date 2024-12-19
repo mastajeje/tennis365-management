@@ -25,23 +25,6 @@ export default function ResultOver30(){
         setResults(resultsData);
     }
 
-    // const getResults = async () => {
-    //     const response = await fetch('/api/win-rate/results?is-over-30=true')
-    //     const results = await response.json();
-
-    //     if(results.is_success){
-    //         const resultsData = results.results;
-    //         resultsData.forEach((result:IResultData) => {
-    //             if(!result.win_rate) return;
-    //             result.win_rate = `${(result.win_rate)}%`;
-    //         });
-        
-    //         setResults(results.results)
-    //         // setResults(results.results.sort((a:IResultData, b:IResultData) => a.name > b.name ? 1: -1))
-    //     }
-    // }
-
-
     return (
         <Table columns={columns} data={results} />
     )

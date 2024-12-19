@@ -1,24 +1,12 @@
-//typescript props 예시
-// **I는 interface 라는 뜻
-// interface IResultProps {
-//     name: string;
-//     score: number;
-//     date: string;
-// }
-
 'use client';
 
 import Button from '@/components/Button';
-// import { Metadata } from 'next';
 import styles from '../../styles/PageSections.module.css';
 import DailyResult from '@/components/DailyResult';
 import Modal from '@/components/Modal';
 import {useEffect, useState} from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import { PRIMARY_BLUE } from '@/app/constants';
-// export const metadata: Metadata = {
-//     title: "승률 계산기",
-//   };
 
 type DateObj = {
   year: number;
@@ -26,8 +14,6 @@ type DateObj = {
   day: number;
 };
 
-// typescript 예시
-// export default function WinningPercentageCal({name, score, date: IResultProps}) {
 export default function WinningPercentageCal() {
 
   const today = new Date();
@@ -41,7 +27,6 @@ export default function WinningPercentageCal() {
   const [targetMonth, setTargetMonth] = useState<number>(currentMonth);
   const [matchDates, setMatchDates] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    // const [isAuthentiCated, setIsAuthenticated] = useState<boolean>(false);
   const [newMatchDateObj, setNewMatchDateObj] = useState<DateObj>({
     year: currentYear,
     month: currentMonth,

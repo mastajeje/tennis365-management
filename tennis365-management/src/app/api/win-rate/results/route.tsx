@@ -17,12 +17,6 @@ export async function GET(req: Request, res: Response) {
   if (queryResults.rows.length > 0) {
     const resultsData:IResultData[] = queryResults.rows;
 
-    // resultsData.forEach((result:IResultData) => {
-    //     if(result.participation === 0) return;
-    //     const winRate = ((result.wins / result.participation) * 100).toFixed(1);
-    //     result.winRate = `${(winRate)}%`;
-    // });
-
     if(isParticipationOver30){
         resultsData.forEach((result:IResultData, index:number) => {
             result.rankings = index + 1;

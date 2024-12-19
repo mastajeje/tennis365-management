@@ -9,7 +9,6 @@ export default function RootLayout({
 }>) {
   const layoutStyle: React.CSSProperties = {
     margin: '0 auto',
-    // backgroundColor: 'gray',
     maxWidth: '640px',
     padding: '0 8px',
   };

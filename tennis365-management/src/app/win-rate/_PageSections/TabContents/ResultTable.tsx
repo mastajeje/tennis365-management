@@ -9,11 +9,6 @@ import Rankings from '../TableContents/Rankings';
 export default function ResultTable() {
 const [activeTab, setActiveTab] = useState<number>(0);
 
-// const handleClickTab = (e:) => {
-//     setActiveTab(index);
-// }
-
-// I need a function that will change the active tab when a tab is clicked
 const handleClickTab = (e: React.MouseEvent<HTMLLIElement>) => {
     const tabIndex = e.currentTarget.getAttribute('data-index');
     setActiveTab(Number(tabIndex));

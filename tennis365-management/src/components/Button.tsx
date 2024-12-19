@@ -3,7 +3,6 @@ import styles from './styles/components.module.css';
 
 export default function Button({
   text,
-  //   /button type attribute
   type = 'button',
   onClick = () => {},
   disabled,

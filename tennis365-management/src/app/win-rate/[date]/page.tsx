@@ -73,7 +73,7 @@ useEffect(()=> {
       if(response.ok) {
         const data = await response.json();
         const tempMatchID = data.matchID as number;
-        // 
+        
         setMatchData(prevMatchData => {
             const updatedMatchData = {...prevMatchData};
             updatedMatchData[tempMatchID] = newMatchData
@@ -125,9 +125,6 @@ useEffect(()=> {
             
           />
         ) : (
-        //   <button className={styles.AddResult} onClick={handleAddResult}>
-        //     + 경기결과 추가
-        //   </button>
         <Button onClick={handleAddResult} text="+ 경기결과 추가" buttonColor={PRIMARY_BLUE} style={buttonStyle}/>
         )}
       </div>

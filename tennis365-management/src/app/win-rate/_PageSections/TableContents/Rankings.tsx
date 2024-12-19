@@ -70,7 +70,6 @@ export default function Rankings() {
     );
   };
   return (
-    // <Table columns={columns} data={data} />
     <div>
       <div className={styles.RankingTable}>
         <span>승률</span>
