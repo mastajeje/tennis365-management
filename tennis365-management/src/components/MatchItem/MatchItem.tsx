@@ -1,11 +1,13 @@
 'use client';
 import {useEffect, useState} from 'react';
-import styles from './styles/components.module.css';
-import SearchBar from './SearchBar';
+import styles from '../styles/components.module.css';
+import SearchBar from '../SearchBar';
 import {usePathname} from 'next/navigation';
-import Button from './Button';
+import Button from '../Button';
 import {useAuth} from '@/app/context/AuthContext';
 import {PRIMARY_BLUE} from '@/app/constants';
+import ScoreInput from './ScoreInput';
+import Player from './Player';
 
 type MatchData = {
   matchID?: string;
@@ -38,9 +40,9 @@ const buttonStyle: React.CSSProperties = {
 
 const LIGHT_BLUE = 'rgba(155,201,255, .1)';
 const LIGHT_RED = 'rgba(219, 29, 17, .05)';
-const DARK_BLUE = 'rgb(62 98 158)'
-const DARK_RED = 'rgba(219, 29, 17, 1'
-
+const DARK_BLUE = 'rgb(62 98 158)';
+const DARK_RED = 'rgba(219, 29, 17, 1';
+const MAX_SCORE = 6;
 
 export default function MatchItem({
   matchID,
@@ -64,9 +66,6 @@ export default function MatchItem({
   const [winner, setWinner] = useState<string>();
 
   const matchDate = pathname.split('/')[2];
-
-  const MAX_SCORE = 6;
-
 
   useEffect(() => {
     // 매치 정보 초기화
@@ -186,58 +185,40 @@ export default function MatchItem({
     <li className={styles.MatchItem}>
       <div
         className={`${styles.col} ${styles.ATeam}`}
-        style={{backgroundColor: winner && (winner === 'A' ? LIGHT_BLUE : LIGHT_RED)}}
+        style={{
+          backgroundColor: winner && (winner === 'A' ? LIGHT_BLUE : LIGHT_RED),
+        }}
       >
-        <div className={styles.PlayerName}>
-          {aTeam ? (
-            <h4>{aTeam[0]}</h4>
-          ) : (
-            <SearchBar
-              onSearch={handlePlayerA1}
-              keyword={playerA1}
-              placeholder={'선수1'}
-            />
-          )}
-        </div>
-        <div className={styles.PlayerName}>
-          {aTeam ? (
-            <h4>{aTeam[1]}</h4>
-          ) : (
-            <SearchBar
-              onSearch={handlePlayerA2}
-              keyword={playerA2}
-              placeholder={'선수2'}
-            />
-          )}
-        </div>
+        <Player
+          team={aTeam}
+          index={0}
+          handlePlayer={handlePlayerA1}
+          player={playerA1}
+          placeholder={'선수1'}
+        />
+        <Player
+          team={aTeam}
+          index={1}
+          handlePlayer={handlePlayerA2}
+          player={playerA2}
+          placeholder={'선수2'}
+        />
       </div>
       <div className={`${styles.col} ${styles.MatchScore}`}>
         <div>
-          {aScore !== undefined ? (
-            <span className={styles.Score} style={{color: aScore === 6 ? DARK_BLUE : DARK_RED}}>{aScore}</span>
-          ) : (
-            <input
-              className={styles.ScoreInput}
-              type="number"
-              min="0"
-              max="6"
-              onChange={handleScoreA}
-              value={scoreA}
-            />
-          )}
+          <ScoreInput
+            score={aScore}
+            handleScore={handleScoreA}
+            value={scoreA}
+            color={aScore === 6 ? DARK_BLUE : DARK_RED}
+          />
           <span> VS </span>
-          {bScore !== undefined ? (
-            <span className={styles.Score} style={{color: bScore === 6 ? DARK_BLUE : DARK_RED}}>{bScore}</span>
-          ) : (
-            <input
-              className={styles.ScoreInput}
-              type="number"
-              min="0"
-              max="6"
-              onChange={handleScoreB}
-              value={scoreB}
-            />
-          )}
+          <ScoreInput
+            score={bScore}
+            handleScore={handleScoreB}
+            value={scoreB}
+            color={bScore === 6 ? DARK_BLUE : DARK_RED}
+          />
           {!isAddingResult && isAuthenticated && (
             <Button
               text={'삭제'}
@@ -248,8 +229,6 @@ export default function MatchItem({
         </div>
         {isAddingResult ? (
           <div className={styles.ConfirmButtons}>
-            {/* <button onClick={endAddingResult}>취소</button>
-            <button onClick={handleAddResult}>확인</button> */}
             <Button
               text={'취소'}
               onClick={endAddingResult}
@@ -264,31 +243,25 @@ export default function MatchItem({
         ) : null}
       </div>
       <div
-      className={`${styles.col} ${styles.BTeam}`}
-        style={{backgroundColor: winner && (winner === 'B' ? LIGHT_BLUE : LIGHT_RED)}}
+        className={`${styles.col} ${styles.BTeam}`}
+        style={{
+          backgroundColor: winner && (winner === 'B' ? LIGHT_BLUE : LIGHT_RED),
+        }}
       >
-        <div className={styles.PlayerName}>
-          {bTeam ? (
-            <h4>{bTeam[0]}</h4>
-          ) : (
-            <SearchBar
-              onSearch={handlePlayerB1}
-              keyword={playerB1}
-              placeholder={'선수1'}
-            />
-          )}
-        </div>
-        <div className={styles.PlayerName}>
-          {bTeam ? (
-            <h4>{bTeam[1]}</h4>
-          ) : (
-            <SearchBar
-              onSearch={handlePlayerB2}
-              keyword={playerB2}
-              placeholder={'선수2'}
-            />
-          )}
-        </div>
+        <Player
+          team={bTeam}
+          index={0}
+          handlePlayer={handlePlayerB1}
+          player={playerB1}
+          placeholder={'선수1'}
+        />
+        <Player
+          team={bTeam}
+          index={1}
+          handlePlayer={handlePlayerB2}
+          player={playerB2}
+          placeholder={'선수2'}
+        />
       </div>
     </li>
   );

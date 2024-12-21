@@ -1,7 +1,7 @@
 'use client';
 
 import styles from '../styles/CalMain.module.css';
-import MatchItem from '../../../components/MatchItem';
+import MatchItem from '../../../components/MatchItem/MatchItem';
 import {useEffect, useState} from 'react';
 import Button from '@/components/Button';
 import { PRIMARY_BLUE } from '@/app/constants';
