@@ -7,6 +7,7 @@ import Modal from '@/components/Modal';
 import {useEffect, useState} from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import { PRIMARY_BLUE } from '@/app/constants';
+import AddDateModal from '../ModalContents/AddDateModal';
 
 type DateObj = {
   year: number;
@@ -146,45 +147,6 @@ export default function WinningPercentageCal() {
     setIsModalOpen(false);
   };
 
-  const AddDateModalContent = () => {
-    return (
-      <div className={styles.AddDateModal}>
-        <h2>날짜 추가</h2>
-        <div className={styles.AddDateInputBox}>
-          <input
-            type="number"
-            min="2000"
-            max="3000"
-            value={newMatchDateObj.year}
-            name="year"
-            onChange={handleNewMatchDateChange}
-          />
-          <input
-            type="number"
-            min="1"
-            max="12"
-            value={newMatchDateObj.month}
-            name="month"
-            onChange={handleNewMatchDateChange}
-          />
-          <input
-            type="number"
-            min="1"
-            max="31"
-            value={newMatchDateObj.day}
-            name="day"
-            onChange={handleNewMatchDateChange}
-          />
-        </div>
-        <div className={styles.AddDateButtons}>
-            <Button text={'취소'} onClick={handleResetModal} />
-            <Button text={'추가'} onClick={handleAddNewMeetingDate} buttonColor={PRIMARY_BLUE} />
-          {/* <button onClick={handleResetModal}>취소</button> */}
-          {/* <button onClick={handleAddNewMeetingDate}>추가</button> */}
-        </div>
-      </div>
-    );
-  };
 
   const getDayOfWeek = (date: string) => {
     const days = ['일', '월', '화', '수', '목', '금', '토'];
@@ -236,7 +198,13 @@ export default function WinningPercentageCal() {
       </div>
 
       {isModalOpen && (
-        <Modal open={isModalOpen} children={AddDateModalContent()} />
+        <Modal open={isModalOpen} children={
+            <AddDateModal 
+                newMatchDateObj={newMatchDateObj} 
+                handleNewMatchDateChange={handleNewMatchDateChange} 
+                handleResetModal={handleResetModal}
+                handleAddNewMeetingDate={handleAddNewMeetingDate}/>
+        } />
       )}
     </div>
   );

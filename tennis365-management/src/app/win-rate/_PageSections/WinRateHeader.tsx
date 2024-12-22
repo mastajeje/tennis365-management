@@ -2,10 +2,9 @@
 import {useState} from 'react';
 import styles from '../styles/PageSections.module.css';
 import Modal from '@/components/Modal';
-import Button from '@/components/Button';
 import {useAuth} from '@/app/context/AuthContext';
 import {useRouter} from 'next/navigation';
-import {PRIMARY_BLUE} from '@/app/constants';
+import PasswordModal from './ModalContents/PasswordModal';
 
 export default function WinRateHeader() {
   const {isAuthenticated, validateAuth} = useAuth();
@@ -49,29 +48,9 @@ export default function WinRateHeader() {
     router.push('/win-rate');
   };
 
-  const modalContent = (
-    <form className={styles.PasswordModal} onSubmit={handlePassword}>
-      <h2>비밀번호를 입력</h2>
-      <p className={styles.PasswordText}>
-        모임날짜 추가, 경기결과 삭제 등의
-        <br></br>
-        작업을 하려면 비밀번호를 입력하세요.
-      </p>
-      <input
-        type="password"
-        className={styles.PasswordInput}
-        onChange={handleChangePassword}
-      />
-      <div className={styles.PasswordButtons}>
-        <Button text={'취소'} onClick={handleResetModal} />
-        <Button text={'추가'} type={'submit'} buttonColor={PRIMARY_BLUE} />
-      </div>
-    </form>
-  );
 
   return (
     <div className={styles.WinRateHeader}>
-      {/* <div className={styles.HeaderLogo} onClick={returnToMain}>Tennis 365</div> */}
       <div className={styles.HeaderLogo} onClick={returnToMain}>
         <img src="/images/tennis365-logo2.webp" alt="tennis 365 logo" />
       </div>
@@ -86,7 +65,12 @@ export default function WinRateHeader() {
         </div>
       )}
 
-      {isModalOpen && <Modal open={isModalOpen} children={modalContent} />}
+      {isModalOpen && <Modal open={isModalOpen} children={
+        <PasswordModal 
+            handlePassword={handlePassword} 
+            handleChangePassword={handleChangePassword} 
+            handleResetModal={handleResetModal}/>
+      } />}
     </div>
   );
 }
