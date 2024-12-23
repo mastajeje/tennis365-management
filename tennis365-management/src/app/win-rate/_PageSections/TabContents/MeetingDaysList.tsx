@@ -1,13 +1,12 @@
 'use client';
 
-import Button from '@/components/Button';
 import styles from '../../styles/PageSections.module.css';
 import DailyResult from '@/components/DailyResult';
 import Modal from '@/components/Modal';
 import {useEffect, useState} from 'react';
-import { useAuth } from '@/app/context/AuthContext';
-import { PRIMARY_BLUE } from '@/app/constants';
+import {useAuth} from '@/app/context/AuthContext';
 import AddDateModal from '../ModalContents/AddDateModal';
+import {getDayOfWeek, getDaysInMonth} from '@/lib/\butils';
 
 type DateObj = {
   year: number;
@@ -16,7 +15,6 @@ type DateObj = {
 };
 
 export default function WinningPercentageCal() {
-
   const today = new Date();
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth() + 1;
@@ -34,14 +32,8 @@ export default function WinningPercentageCal() {
     day: currentDay,
   });
 
-  const getDaysInMonth = (year: number, month: number) => {
-    return new Date(year, month, 0).getDate();
-  };
-
   useEffect(() => {
     getMatchDates(targetYear, targetMonth);
-    
-
   }, []);
 
   const processDateInput = (value: string, name: string): string | void => {
@@ -147,13 +139,6 @@ export default function WinningPercentageCal() {
     setIsModalOpen(false);
   };
 
-
-  const getDayOfWeek = (date: string) => {
-    const days = ['일', '월', '화', '수', '목', '금', '토'];
-    const day = new Date(date).getDay();
-    return days[day];
-  }
-
   return (
     <div>
       <header className={styles.CalMainHeader}>
@@ -184,9 +169,11 @@ export default function WinningPercentageCal() {
           </div>
         </div>
 
-        {isAuthenticated &&<button className={styles.AddDateButton} onClick={handleOpenModal}>
-          날짜 추가
-        </button>}
+        {isAuthenticated && (
+          <button className={styles.AddDateButton} onClick={handleOpenModal}>
+            날짜 추가
+          </button>
+        )}
       </header>
       <div className="appBody">
         <ul>
@@ -198,13 +185,17 @@ export default function WinningPercentageCal() {
       </div>
 
       {isModalOpen && (
-        <Modal open={isModalOpen} children={
-            <AddDateModal 
-                newMatchDateObj={newMatchDateObj} 
-                handleNewMatchDateChange={handleNewMatchDateChange} 
-                handleResetModal={handleResetModal}
-                handleAddNewMeetingDate={handleAddNewMeetingDate}/>
-        } />
+        <Modal
+          open={isModalOpen}
+          children={
+            <AddDateModal
+              newMatchDateObj={newMatchDateObj}
+              handleNewMatchDateChange={handleNewMatchDateChange}
+              handleResetModal={handleResetModal}
+              handleAddNewMeetingDate={handleAddNewMeetingDate}
+            />
+          }
+        />
       )}
     </div>
   );

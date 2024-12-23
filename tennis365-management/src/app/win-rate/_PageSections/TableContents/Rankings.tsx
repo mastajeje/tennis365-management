@@ -34,7 +34,7 @@ export default function Rankings() {
 
   const updateResults = async () => {
     const resultsData = await getResults(false);
-
+    if(resultsData === undefined) return console.log('Cannot get data from server');
     setWinRateRankings(
       resultsData.filter((item: IResultData) => item.participation > 30)
         .sort((a: IResultData, b: IResultData) =>
