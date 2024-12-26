@@ -1,8 +1,6 @@
 # tennis365-management
 
 ## 승률계산기
-
-  
 ToDo List
 ### 메인 페이지
 - [x] 경기 날짜 추가(운영진 만)

@@ -71,33 +71,24 @@
 
 
 
-<!-- ### <a href="#top">맨 위로</a>
+ ### <a href="#top">맨 위로</a>
 
 ## <span id="main-features">주요기능</span>
 
 #### <span id="features">기능</span>
 
-- <a href="https://github.com/flexing1010/Tennis365/blob/main/%EA%B8%B0%EB%8A%A5/login.md">로그인 프로세스 </a>
-- <a href="https://github.com/flexing1010/Tennis365/blob/main/%EA%B8%B0%EB%8A%A5/join.md">회원가입 프로세스 </a> REACT DAUM POSTCODE(다음 우편찾기 라이브러리)]
-- <a href="https://github.com/flexing1010/Tennis365/blob/main/%EA%B8%B0%EB%8A%A5/cart.md">장바구니에 담기 프로세스 </a>
-- <a href="https://github.com/flexing1010/Tennis365/blob/main/%EA%B8%B0%EB%8A%A5/order.md">주문하기 프로세스 </a> [REACT DAUM POSTCODE(다음 우편찾기 라이브러리)]
-- <a href="https://github.com/flexing1010/Tennis365/blob/main/%EA%B8%B0%EB%8A%A5/transaction.md">결제 프로세스 
+- 매치결과 입력
+- 매치결과를 토대로 순위 산정
 
-#### <span id="library">Open Api 및 라이브러리 적용</span>
 
-- <a href="https://www.iamport.kr/">IAMPORT(결제 API)</a>
-- <a href="https://ui.toast.com/tui-grid/">TOAST GRID(그리드 라이브러리)</a>
-- <a href="https://jpuri.github.io/react-draft-wysiwyg/#/">REACT DRAFT WYSIWYG(에디터 라이브러리)</a>
-- <a href="https://www.npmjs.com/package/react-hooks-paginator">REACT HOOKS PAGINATOR(페이징 라이브러리)</a>
-- <a href="http://postcode.map.daum.net/guide">REACT DAUM POSTCODE(다음 우편찾기 라이브러리)</a>
-- <a href="https://www.npmjs.com/package/multer">MULTER(파일업로드 라이브러리)</a>
-- <a href="https://www.npmjs.com/package/mysql2">MYSQL2(DB 라이브러리)</a>
+<!-- - <a href="https://github.com/flexing1010/Tennis365/blob/main/%EA%B8%B0%EB%8A%A5/transaction.md">결제 프로세스  -->
 
-### <a href="#top">맨 위로</a>
+
+
 
 <br />
 
-## 스크린샷
+<!-- ## 스크린샷
 
 ### 메인화면
 
@@ -106,5 +97,5 @@
 ### 메인화면(모바일)
 
 ![365-main(mobile)](https://user-images.githubusercontent.com/79352105/137310446-8c019311-a6d8-488b-ac14-0ade3ce51cd4.gif)
--->
-### <a href="#top">맨 위로</a> -->
+
+### <a href="#top">맨 위로</a> --> 
