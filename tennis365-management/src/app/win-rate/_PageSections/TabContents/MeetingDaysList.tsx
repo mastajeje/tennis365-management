@@ -86,7 +86,7 @@ export default function WinningPercentageCal() {
       setMatchDates(meetingDates);
       if (!response.ok) throw new Error('Failed to add match');
     } catch (error) {
-      console.error(error);
+      console.error('Failed to add new meeting date',error);
     }
   };
 

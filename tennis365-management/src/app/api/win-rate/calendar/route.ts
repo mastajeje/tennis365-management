@@ -4,20 +4,24 @@ interface MeetingDate {
   date: any;
 }
 
+const syncTimezone = (date: Date) => {
+        // to sync with current timezone(multiplied by 60000 to convert to milliseconds)
+    const timezoneOffset = date.getTimezoneOffset() * 60000;
+    return new Date(date.getTime() - timezoneOffset).toISOString();
+    }
+
 export async function GET(req: Request) {
   const {searchParams} = new URL(req.url);
   const year = searchParams.get('year');
   const month = searchParams.get('month');
   if (year && month) {
-    // to sync with current timezone
-    const timezoneOffset = new Date().getTimezoneOffset() * 60000;
 
     const matches = await query.get_match_dates(
       parseInt(year, 10),
       parseInt(month, 10)
     );
     const meetingDates = matches.rows.map((match: MeetingDate) =>
-      new Date(match.date - timezoneOffset).toISOString()
+    syncTimezone(match.date)
     );
     return Response.json(meetingDates);
   } else {

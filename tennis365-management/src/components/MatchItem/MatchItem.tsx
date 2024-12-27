@@ -104,8 +104,8 @@ export default function MatchItem({
 
   const handleScoreA = (e: React.ChangeEvent<HTMLInputElement>) => {
     const score = Number(e.target.value);
-    if (score > 6) {
-      setScoreA(6);
+    if (score > MAX_SCORE) {
+      setScoreA(MAX_SCORE);
       return;
     } else if (score < 0) {
       setScoreA(0);
@@ -117,8 +117,8 @@ export default function MatchItem({
 
   const handleScoreB = (e: React.ChangeEvent<HTMLInputElement>) => {
     const score = Number(e.target.value);
-    if (score > 6) {
-      setScoreB(6);
+    if (score > MAX_SCORE) {
+      setScoreB(MAX_SCORE);
       return;
     } else if (score < 0) {
       setScoreB(0);
@@ -227,7 +227,7 @@ export default function MatchItem({
             />
           )}
         </div>
-        {isAddingResult ? (
+        {isAddingResult && (
           <div className={styles.ConfirmButtons}>
             <Button
               text={'취소'}
@@ -240,7 +240,7 @@ export default function MatchItem({
               buttonColor={PRIMARY_BLUE}
             />
           </div>
-        ) : null}
+        )}
       </div>
       <div
         className={`${styles.col} ${styles.BTeam}`}
