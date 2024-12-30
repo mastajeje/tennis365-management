@@ -5,7 +5,7 @@ import SearchBar from '../SearchBar';
 import {usePathname} from 'next/navigation';
 import Button from '../Button';
 import {useAuth} from '@/app/context/AuthContext';
-import {PRIMARY_BLUE} from '@/app/constants';
+import {DARK_BLUE, DARK_RED, LIGHT_BLUE, LIGHT_RED, MAX_SCORE, PRIMARY_BLUE} from '@/app/constants';
 import ScoreInput from './ScoreInput';
 import Player from './Player';
 
@@ -38,11 +38,11 @@ const buttonStyle: React.CSSProperties = {
   marginTop: '13px',
 };
 
-const LIGHT_BLUE = 'rgba(155,201,255, .1)';
-const LIGHT_RED = 'rgba(219, 29, 17, .05)';
-const DARK_BLUE = 'rgb(62 98 158)';
-const DARK_RED = 'rgba(219, 29, 17, 1';
-const MAX_SCORE = 6;
+// const LIGHT_BLUE = 'rgba(155,201,255, .1)';
+// const LIGHT_RED = 'rgba(219, 29, 17, .05)';
+// const DARK_BLUE = 'rgb(62 98 158)';
+// const DARK_RED = 'rgba(219, 29, 17, 1';
+// const MAX_SCORE = 6;
 
 export default function MatchItem({
   matchID,

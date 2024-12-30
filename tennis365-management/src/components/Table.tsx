@@ -10,7 +10,7 @@ interface TableProps {
     data?: {[key:string]: any}[];
 }
 
-export default function Table({columns, data}: TableProps){
+export default function Table({columns, data = []}: TableProps){
     return (
         <div>
             <table className={styles.Table}>
@@ -27,7 +27,7 @@ export default function Table({columns, data}: TableProps){
                     {data && data.map((row, rowIndex)=>(
                         <tr key={rowIndex}>
                             {columns.map((col)=> (
-                                <td key={col.key}>
+                                <td key={`${rowIndex}-${col.key}`}>
                                     {row[col.key] || '-'}
                                 </td>
                             ))}

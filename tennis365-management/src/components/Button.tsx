@@ -1,6 +1,16 @@
 import {useState} from 'react';
 import styles from './styles/components.module.css';
 
+interface ButtonProps {
+    text: string;
+    type?: 'button' | 'submit' | 'reset' | undefined;
+    onClick?: () => void;
+    disabled?: boolean;
+    style?: React.CSSProperties;
+    buttonColor?: string;
+}
+
+
 export default function Button({
   text,
   type = 'button',
@@ -8,14 +18,7 @@ export default function Button({
   disabled,
   style,
   buttonColor = '#e1e1e1',
-}: Readonly<{
-  text: string;
-  type?: 'button' | 'submit' | 'reset' | undefined;
-  onClick?: () => void;
-  disabled?: boolean;
-  style?: React.CSSProperties;
-  buttonColor?: string;
-}>) {
+}: Readonly<ButtonProps>) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
   return (
