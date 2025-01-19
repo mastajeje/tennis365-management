@@ -1,7 +1,6 @@
 
-# Tennis365
-*Heroku free tier제공 중지로 인하여 서버가 중단된 상태*
-### <a href="https://tennis365-management-q7gc-rl0j38vpx-mastajejes-projects.vercel.app/win-rate">사이트 바로가기</a>
+# Tennis365 Match Tracker
+### <a href="https://tennis365-management.vercel.app/win-rate">사이트 바로가기</a>
 
 #### Develop Tool
 
