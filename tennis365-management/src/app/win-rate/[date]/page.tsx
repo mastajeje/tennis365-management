@@ -128,6 +128,9 @@ useEffect(()=> {
         <Button onClick={handleAddResult} text="+ 경기결과 추가" buttonColor={PRIMARY_BLUE} style={buttonStyle}/>
         )}
       </div>
+      <div className={styles.Warning}>
+        *선수 이름은 성까지 정확하게 입력해주세요!
+      </div>
     </div>
   );
 }

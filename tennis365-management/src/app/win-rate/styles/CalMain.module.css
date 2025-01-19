@@ -27,8 +27,15 @@
     border-bottom: 1px solid var(--primary-gray);
 }
 
+
 .MatchContainer > li {
     display: flex;
     align-items: center;
     border-bottom: 1px solid var(--primary-gray);
+}
+
+.Warning {
+    margin-top: 8px;
+    opacity: 0.6;
+    font-size: 14px;
 }

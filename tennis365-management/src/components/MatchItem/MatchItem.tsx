@@ -184,7 +184,7 @@ export default function MatchItem({
   return (
     <li className={styles.MatchItem}>
       <div
-        className={`${styles.col} ${styles.ATeam}`}
+        className={`${styles.PlayerInput} ${styles.ATeam}`}
         style={{
           backgroundColor: winner && (winner === 'A' ? LIGHT_BLUE : LIGHT_RED),
         }}
@@ -243,7 +243,7 @@ export default function MatchItem({
         )}
       </div>
       <div
-        className={`${styles.col} ${styles.BTeam}`}
+        className={`${styles.PlayerInput} ${styles.BTeam}`}
         style={{
           backgroundColor: winner && (winner === 'B' ? LIGHT_BLUE : LIGHT_RED),
         }}

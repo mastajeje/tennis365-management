@@ -2,12 +2,24 @@
   flex: 1 0 0%;
 }
 
+.PlayerInput {
+    flex: 1;
+}
+
+.PlayerInput input {
+    width: 100%;
+}
+
 .ATeam {
   text-align: left;
+  /* max-width: 35%; */
+
 }
 
 .BTeam {
   text-align: right;
+  /* max-width: 35%; */
+
 }
 
 .MatchScore {
@@ -15,8 +27,9 @@
 }
 
 .ScoreInput {
-  width: 40px;
-  height: 40px;
+  /* width: 40px; */
+  /* height: 40px; */
+  width: fit-content;
 }
 
 .PlayerName {
