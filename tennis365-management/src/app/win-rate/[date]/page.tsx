@@ -34,7 +34,7 @@ export default function DailyResultPage({
   const [matchData, setMatchData] = useState<MatchData[]>([]);
 
 
-  const fetchMatchData = async () => {
+  const fetchMatchData = async ():Promise<void> => {
     try{
 
         const response = await fetch(`/api/win-rate/matches?date=${date}`,{
