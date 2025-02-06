@@ -178,7 +178,9 @@ export default function WinningPercentageCal() {
       <div className="appBody">
         <ul>
           {matchDates.map((date) => {
+            console.log(date)
             const day = getDayOfWeek(date);
+            
             return <DailyResult key={date} matchDate={date} matchDay={day} />;
           })}
         </ul>
