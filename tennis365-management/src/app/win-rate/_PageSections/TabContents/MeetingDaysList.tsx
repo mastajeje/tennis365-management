@@ -6,13 +6,14 @@ import Modal from '@/components/Modal';
 import {useEffect, useState} from 'react';
 import {useAuth} from '@/app/context/AuthContext';
 import AddDateModal from '../ModalContents/AddDateModal';
-import {getDayOfWeek, getDaysInMonth} from '@/lib/\butils';
+import {getDayOfWeek, processDateInput} from '@/lib/\butils';
+import { DateObj } from '@/app/types/match';
 
-type DateObj = {
-  year: number;
-  month: number;
-  day: number;
-};
+// type DateObj = {
+//   year: number;
+//   month: number;
+//   day: number;
+// };
 
 export default function WinningPercentageCal() {
   const today = new Date();
@@ -36,29 +37,9 @@ export default function WinningPercentageCal() {
     getMatchDates(targetYear, targetMonth);
   }, []);
 
-  const processDateInput = (value: string, name: string): string | void => {
-    const limitedValue = value.slice(0, name === 'year' ? 4 : 2); // Limit year to 4 digits, month and day to 2 digits
-
-    if (
-      (name === 'month' && parseInt(limitedValue) > 12) ||
-      parseInt(limitedValue) === 0
-    )
-      return;
-
-    if (name === 'day') {
-      const daysInMonth = getDaysInMonth(
-        newMatchDateObj.year,
-        newMatchDateObj.month
-      );
-      if (parseInt(limitedValue) > daysInMonth || parseInt(limitedValue) === 0)
-        return;
-    }
-    return limitedValue;
-  };
-
   const handleTargetDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
-    const limitedValue = processDateInput(value, name);
+    const limitedValue = processDateInput(value, name, newMatchDateObj);
     if (limitedValue === undefined) return;
 
     if (name === 'year') {
@@ -97,7 +78,7 @@ export default function WinningPercentageCal() {
   const handleNewMatchDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
 
-    const limitedValue = processDateInput(value, name);
+    const limitedValue = processDateInput(value, name, newMatchDateObj);
 
     setNewMatchDateObj((prevState) => ({
       ...prevState,
@@ -178,7 +159,6 @@ export default function WinningPercentageCal() {
       <div className="appBody">
         <ul>
           {matchDates.map((date) => {
-            console.log(date)
             const day = getDayOfWeek(date);
             
             return <DailyResult key={date} matchDate={date} matchDay={day} />;

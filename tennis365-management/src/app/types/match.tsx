@@ -8,3 +8,9 @@ export interface IResultData {
     rankings: number;
     debt?: number;
 }
+
+export type DateObj = {
+    year: number;
+    month: number;
+    day: number;
+  };

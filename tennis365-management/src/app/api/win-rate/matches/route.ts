@@ -22,6 +22,16 @@ type Player = {
   player_id: number;
 };
 
+interface Match {
+    matches_id: number;
+    name: string;
+    a_score: number;
+    b_score: number;
+    time_added: string;
+    team: string;
+    winner_team: string;
+}
+
 export async function GET(req: Request) {
   const {searchParams} = new URL(req.url);
   const date = searchParams.get('date');
@@ -30,15 +40,7 @@ export async function GET(req: Request) {
     const formattedMatches: IMatchData = {};
     // formattedMatches = {};
     matches.rows.forEach(
-      (match: {
-        matches_id: number;
-        name: string;
-        a_score: number;
-        b_score: number;
-        time_added: string;
-        team: string;
-        winner_team: string;
-      }) => {
+      (match: Match) => {
         const matchId = match.matches_id;
 
         // matchId key에 property가 없을 경우 초기화
