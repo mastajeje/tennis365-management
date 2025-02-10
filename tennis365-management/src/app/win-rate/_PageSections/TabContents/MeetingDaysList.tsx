@@ -158,11 +158,11 @@ export default function WinningPercentageCal() {
       </header>
       <div className="appBody">
         <ul>
-          {matchDates.map((date) => {
+          {matchDates.length != 0 ? matchDates.map((date) => {
             const day = getDayOfWeek(date);
             
             return <DailyResult key={date} matchDate={date} matchDay={day} />;
-          })}
+          }) : <div className={styles.NoDate}>경기결과가 없습니다.</div>}
         </ul>
       </div>
 

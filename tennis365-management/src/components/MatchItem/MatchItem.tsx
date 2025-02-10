@@ -5,7 +5,14 @@ import SearchBar from '../SearchBar';
 import {usePathname} from 'next/navigation';
 import Button from '../Button';
 import {useAuth} from '@/app/context/AuthContext';
-import {DARK_BLUE, DARK_RED, LIGHT_BLUE, LIGHT_RED, MAX_SCORE, PRIMARY_BLUE} from '@/app/constants';
+import {
+  DARK_BLUE,
+  DARK_RED,
+  LIGHT_BLUE,
+  LIGHT_RED,
+  MAX_SCORE,
+  PRIMARY_BLUE,
+} from '@/app/constants';
 import ScoreInput from './ScoreInput';
 import Player from './Player';
 
@@ -102,47 +109,43 @@ export default function MatchItem({
     setPlayerB2(e.target.value);
   };
 
-  const handleScoreA = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const score = Number(e.target.value);
-    if (score > MAX_SCORE) {
-      setScoreA(MAX_SCORE);
-      return;
-    } else if (score < 0) {
-      setScoreA(0);
-      return;
-    }
+  const handleScore =
+    (team: 'A' | 'B') => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const score = Number(e.target.value);
+      if (score > MAX_SCORE) {
+        team === 'A' ? setScoreA(MAX_SCORE) : setScoreB(MAX_SCORE);
+        return;
+      } else if (score < 0) {
+        team === 'A' ? setScoreA(0) : setScoreB(0);
+        return;
+      }
 
-    setScoreA(score);
+      team === 'A' ? setScoreA(score) : setScoreB(score);
+    };
+
+  const arePlayersFilled = () => {
+    return (
+      playerA1 !== '' && playerA2 !== '' && playerB1 !== '' && playerB2 !== ''
+    );
   };
 
-  const handleScoreB = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const score = Number(e.target.value);
-    if (score > MAX_SCORE) {
-      setScoreB(MAX_SCORE);
-      return;
-    } else if (score < 0) {
-      setScoreB(0);
-      return;
-    }
-
-    setScoreB(score);
+  const areScoresValid = () => {
+    console.log((scoreA !== MAX_SCORE && scoreB !== MAX_SCORE) || scoreA === scoreB)
+    return (scoreA !== MAX_SCORE && scoreB !== MAX_SCORE) || scoreA === scoreB;
   };
 
   const handleAddResult = () => {
-    if ((scoreA !== MAX_SCORE && scoreB !== MAX_SCORE) || scoreA === scoreB) {
+    if (areScoresValid()) {
       alert(`한 팀이 ${MAX_SCORE}점을 얻어야 합니다.`);
       return;
     }
-    if (
-      onPostMatch &&
-      endAddingResult &&
-      playerA1 !== '' &&
-      playerA2 !== '' &&
-      playerB1 !== '' &&
-      playerB2 !== '' &&
-      scoreA >= 0 &&
-      scoreB >= 0
-    ) {
+
+    if (!arePlayersFilled()) {
+      alert('빈칸을 채워주세요');
+      return;
+    }
+
+    if (onPostMatch && endAddingResult) {
       onPostMatch({
         aTeam: [playerA1, playerA2],
         bTeam: [playerB1, playerB2],
@@ -153,8 +156,6 @@ export default function MatchItem({
       });
 
       endAddingResult();
-    } else {
-      alert('빈칸을 채워주세요');
     }
   };
 
@@ -208,14 +209,14 @@ export default function MatchItem({
         <div>
           <ScoreInput
             score={aScore}
-            handleScore={handleScoreA}
+            handleScore={handleScore('A')}
             value={scoreA}
             color={aScore === 6 ? DARK_BLUE : DARK_RED}
           />
           <span> VS </span>
           <ScoreInput
             score={bScore}
-            handleScore={handleScoreB}
+            handleScore={handleScore('B')}
             value={scoreB}
             color={bScore === 6 ? DARK_BLUE : DARK_RED}
           />

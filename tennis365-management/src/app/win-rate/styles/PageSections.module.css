@@ -17,6 +17,12 @@
     font-size: 18px;
 }
 
+.NoDate {
+        text-align: center;
+    color: gray;
+    font-size: 21px;
+}
+
 .AddDateButton{
     width: 100%;
     background: white;
