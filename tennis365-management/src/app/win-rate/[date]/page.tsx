@@ -4,26 +4,17 @@ import styles from '../styles/CalMain.module.css';
 import MatchItem from '../../../components/MatchItem/MatchItem';
 import {useEffect, useState} from 'react';
 import Button from '@/components/Button';
-import { PRIMARY_BLUE } from '@/app/constants';
+import {PRIMARY_BLUE} from '@/app/constants';
+import {fetchMatchData, postMatch} from '@/lib/api';
+import {MatchData} from '@/app/types/match';
 
-type MatchData = {
-  aTeam: string[];
-  bTeam: string[];
-  aScore: number;
-  bScore: number;
-  matchDate: string;
-  winner: string;
+const buttonStyle: React.CSSProperties = {
+  width: '100%',
+  background: 'white',
+  border: '1px solid var(--primary-blue)',
+  borderRadius: '6px',
+  marginTop: '16px',
 };
-
-
-
-    const buttonStyle: React.CSSProperties = {
-        'width': '100%',
-        'background': 'white',
-        'border': '1px solid var(--primary-blue)',
-        'borderRadius': '6px',
-        'marginTop': '16px'
-      };
 
 export default function DailyResultPage({
   params: {date},
@@ -33,27 +24,21 @@ export default function DailyResultPage({
   const [isAddingResult, setIsAddingResult] = useState<boolean>(false);
   const [matchData, setMatchData] = useState<MatchData[]>([]);
 
+  const updateMatchData = async (): Promise<void> => {
+    try {
+      const response = await fetchMatchData(date);
 
-  const fetchMatchData = async ():Promise<void> => {
-    try{
-
-        const response = await fetch(`/api/win-rate/matches?date=${date}`,{
-            method: 'GET'
-        })
-
-        const data= await response.json();
-        setMatchData(data);
-    } catch (error){
-        console.error(error)
+      const data = await response.json();
+      setMatchData(data);
+    } catch (error) {
+      console.error(error);
     }
-}
+  };
 
+  useEffect(() => {
+    updateMatchData();
+  }, []);
 
-useEffect(()=> {
-    fetchMatchData()
-},[])
-
-  
   const handleAddResult = () => {
     setIsAddingResult(true);
   };
@@ -62,27 +47,22 @@ useEffect(()=> {
     setIsAddingResult(false);
   };
 
-  const handlePostMatch = async (newMatchData: MatchData):Promise<any> => {
-
+  const handlePostMatch = async (newMatchData: MatchData): Promise<any> => {
     try {
-      const response = await fetch('/api/win-rate/matches', {
-        method: 'POST',
-        body: JSON.stringify(newMatchData),
-      });
-   
-      if(response.ok) {
+      const response = await postMatch(newMatchData);
+
+      if (response.ok) {
         const data = await response.json();
         const tempMatchID = data.matchID as number;
-        
-        setMatchData(prevMatchData => {
-            const updatedMatchData = {...prevMatchData};
-            updatedMatchData[tempMatchID] = newMatchData
-            return updatedMatchData;
+
+        setMatchData((prevMatchData) => {
+          const updatedMatchData = {...prevMatchData};
+          updatedMatchData[tempMatchID] = newMatchData;
+          return updatedMatchData;
         });
-      }else{
-        throw new Error('Failed to add match')
+      } else {
+        throw new Error('Failed to add match');
       }
-    
     } catch (error) {
       console.error(error);
     }
@@ -95,26 +75,25 @@ useEffect(()=> {
       </header>
       <div className="ResultsBody">
         <ul className={styles.MatchContainer}>
-          {
-          matchData ? 
-          <>
-          {
-          
-          (Object.entries(matchData))?.map(([matchID,match]) => {
-            return (
-              <MatchItem
-                key={matchID}
-                matchID={matchID}
-                aTeam={match.aTeam}
-                bTeam={match.bTeam}
-                aScore={match.aScore}
-                bScore={match.bScore}
-                fetchMatchData={fetchMatchData}
-              />
-            );
-          })} 
-          </>
-          : <h1>경기결과가 없습니다.</h1>}
+          {matchData ? (
+            <>
+              {Object.entries(matchData)?.map(([matchID, match]) => {
+                return (
+                  <MatchItem
+                    key={matchID}
+                    matchID={matchID}
+                    aTeam={match.aTeam}
+                    bTeam={match.bTeam}
+                    aScore={match.aScore}
+                    bScore={match.bScore}
+                    updateMatchData={updateMatchData}
+                  />
+                );
+              })}
+            </>
+          ) : (
+            <h1>경기결과가 없습니다.</h1>
+          )}
         </ul>
 
         {isAddingResult ? (
@@ -122,10 +101,14 @@ useEffect(()=> {
             isAddingResult={isAddingResult}
             endAddingResult={endAddingResult}
             onPostMatch={handlePostMatch}
-            
           />
         ) : (
-        <Button onClick={handleAddResult} text="+ 경기결과 추가" buttonColor={PRIMARY_BLUE} style={buttonStyle}/>
+          <Button
+            onClick={handleAddResult}
+            text="+ 경기결과 추가"
+            buttonColor={PRIMARY_BLUE}
+            style={buttonStyle}
+          />
         )}
       </div>
       <div className={styles.Warning}>

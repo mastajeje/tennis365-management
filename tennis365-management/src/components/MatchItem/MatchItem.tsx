@@ -15,6 +15,7 @@ import {
 } from '@/app/constants';
 import ScoreInput from './ScoreInput';
 import Player from './Player';
+import { deleteMatchData } from '@/lib/api';
 
 type MatchData = {
   matchID?: string;
@@ -36,7 +37,7 @@ interface IResultProps {
   matchDate?: string;
   endAddingResult?: () => void;
   onPostMatch?: (matchData: MatchData) => Promise<any>;
-  fetchMatchData?: () => void;
+  updateMatchData?: () => void;
 }
 
 const buttonStyle: React.CSSProperties = {
@@ -60,7 +61,7 @@ export default function MatchItem({
   isAddingResult,
   endAddingResult,
   onPostMatch,
-  fetchMatchData,
+  updateMatchData,
 }: IResultProps) {
   const pathname = usePathname();
   const {isAuthenticated} = useAuth();
@@ -130,7 +131,6 @@ export default function MatchItem({
   };
 
   const areScoresValid = () => {
-    console.log((scoreA !== MAX_SCORE && scoreB !== MAX_SCORE) || scoreA === scoreB)
     return (scoreA !== MAX_SCORE && scoreB !== MAX_SCORE) || scoreA === scoreB;
   };
 
@@ -163,19 +163,17 @@ export default function MatchItem({
     // TODO: 삭제 요청 후 리스트가 업데이트 될때까지 딜레이가 있음
     // post 요청과 같이 local state를 업데이트하는 방식으로 변경하면 반응이 빠를 것으로 예상
     try {
-      const response = await fetch(
-        `/api/win-rate/matches?match-id=${matchID}`,
-        {
-          method: 'DELETE',
+        if (!matchID) {
+            throw new Error('Match ID is not provided');
         }
-      );
+      const response = await deleteMatchData(matchID);
 
       if (!response.ok) {
         throw new Error('Failed to delete match');
       }
 
-      if (fetchMatchData) {
-        fetchMatchData();
+      if (updateMatchData) {
+        updateMatchData();
       }
     } catch (error) {
       console.error(error);

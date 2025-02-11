@@ -5,6 +5,7 @@ import Modal from '@/components/Modal';
 import {useAuth} from '@/app/context/AuthContext';
 import {useRouter} from 'next/navigation';
 import PasswordModal from './ModalContents/PasswordModal';
+import { validatePassword } from '@/lib/api';
 
 export default function WinRateHeader() {
   const {isAuthenticated, validateAuth} = useAuth();
@@ -23,13 +24,7 @@ export default function WinRateHeader() {
   const handlePassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const response = await fetch('/api/validate', {
-      method: 'POST',
-      body: JSON.stringify({password}),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+const response = await validatePassword(password)
 
     if (response.status === 200) {
       setIsModalOpen(false);
