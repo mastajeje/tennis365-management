@@ -1,11 +1,4 @@
-/* meeting day list */
-.CalLayout {
-    margin: 0 auto;
-    /* background-color: gray; */
-    max-width: 640px;
-    padding: 8px;
-  }
-
+/* Date Selector */
 .TargetDate{
     display: flex;
     gap: 8px;
@@ -16,6 +9,16 @@
     padding: 2px 4px;
     font-size: 18px;
 }
+
+
+/* meeting day list */
+.CalLayout {
+    margin: 0 auto;
+    /* background-color: gray; */
+    max-width: 640px;
+    padding: 8px;
+  }
+
 
 .NoDate {
         text-align: center;

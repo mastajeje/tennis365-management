@@ -7,8 +7,9 @@ import {useEffect, useState} from 'react';
 import {useAuth} from '@/app/context/AuthContext';
 import AddDateModal from '../ModalContents/AddDateModal';
 import {getDayOfWeek, processDateInput} from '@/lib/\butils';
-import { DateObj } from '@/app/types/match';
-import { fetchMatchDate, postNewMeetingDate } from '@/lib/api';
+import {DateObj} from '@/app/types/match';
+import {fetchMatchDate, postNewMeetingDate} from '@/lib/api';
+import DateSelector from '../DateSelector';
 
 // type DateObj = {
 //   year: number;
@@ -17,8 +18,8 @@ import { fetchMatchDate, postNewMeetingDate } from '@/lib/api';
 // };
 
 export interface PostNewMeetingDateResponse {
-    is_success: boolean;
-  }
+  is_success: boolean;
+}
 
 export default function WinningPercentageCal() {
   const today = new Date();
@@ -67,7 +68,7 @@ export default function WinningPercentageCal() {
       setMatchDates(meetingDates);
       if (!response.ok) throw new Error('Failed to add match');
     } catch (error) {
-      console.error('Failed to add new meeting date',error);
+      console.error('Failed to add new meeting date', error);
     }
   };
 
@@ -86,7 +87,6 @@ export default function WinningPercentageCal() {
     }));
   };
 
-
   const resetModal = () => {
     setNewMatchDateObj({
       year: currentYear,
@@ -96,18 +96,17 @@ export default function WinningPercentageCal() {
     setIsModalOpen(false);
   };
 
-const updateMatchDates = (dateObj:DateObj) => {
+  const updateMatchDates = (dateObj: DateObj) => {
     const {year, month, day} = dateObj;
-        
-        setMatchDates((prevMatchDates) => [
-            ...prevMatchDates,
-            `${year}-${month}-${day}`,
-          ]);  
-          setTargetYear(year);
-          setTargetMonth(month);
-          getMatchDates(year, month);
-      
-}
+
+    setMatchDates((prevMatchDates) => [
+      ...prevMatchDates,
+      `${year}-${month}-${day}`,
+    ]);
+    setTargetYear(year);
+    setTargetMonth(month);
+    getMatchDates(year, month);
+  };
 
   const handleAddNewMeetingDate = async () => {
     const response = await postNewMeetingDate(newMatchDateObj);
@@ -118,38 +117,14 @@ const updateMatchDates = (dateObj:DateObj) => {
     resetModal();
   };
 
-
-
   return (
     <div>
       <header className={styles.CalMainHeader}>
-        <div className={styles.TargetDate}>
-          <div className="TargetYear">
-            <input
-              type="number"
-              className={styles.dateInput}
-              name="year"
-              min="2000"
-              max="3000"
-              onChange={handleTargetDateChange}
-              value={targetYear}
-            />
-            <span>년</span>
-          </div>
-          <div className="TargetMonth">
-            <input
-              type="number"
-              name="month"
-              className={styles.dateInput}
-              min="1"
-              max="12"
-              onChange={handleTargetDateChange}
-              value={targetMonth}
-            />
-            <span>월</span>
-          </div>
-        </div>
-
+        <DateSelector
+          year={targetYear}
+          month={targetMonth}
+          onDateChange={handleTargetDateChange}
+        />
         {isAuthenticated && (
           <button className={styles.AddDateButton} onClick={handleOpenModal}>
             날짜 추가
@@ -158,11 +133,15 @@ const updateMatchDates = (dateObj:DateObj) => {
       </header>
       <div className="appBody">
         <ul>
-          {matchDates.length != 0 ? matchDates.map((date) => {
-            const day = getDayOfWeek(date);
-            
-            return <DailyResult key={date} matchDate={date} matchDay={day} />;
-          }) : <div className={styles.NoDate}>경기결과가 없습니다.</div>}
+          {matchDates.length != 0 ? (
+            matchDates.map((date) => {
+              const day = getDayOfWeek(date);
+
+              return <DailyResult key={date} matchDate={date} matchDay={day} />;
+            })
+          ) : (
+            <div className={styles.NoDate}>경기결과가 없습니다.</div>
+          )}
         </ul>
       </div>
 
