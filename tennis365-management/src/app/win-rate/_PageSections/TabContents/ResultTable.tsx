@@ -2,26 +2,45 @@
 
 import TotalResults from '../TableContents/TotalResults';
 import styles from '../../styles/PageSections.module.css';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import ResultOver30 from '../TableContents/ResultOver30';
 import Rankings from '../TableContents/Rankings';
+import { getResults } from '@/lib/api';
+import { IResultData } from '@/app/types/match';
+
+const OVER_30_TABLE = 1; 
 
 export default function ResultTable() {
   const [activeTab, setActiveTab] = useState<number>(0);
+  const [resultsData, setResultsData] = useState<IResultData[]>();
+
+useEffect(()=> {
+    fetchResults(false);
+},[])
 
   const handleClickTab = (e: React.MouseEvent<HTMLLIElement>) => {
     const tabIndex = e.currentTarget.getAttribute('data-index');
     setActiveTab(Number(tabIndex));
+    fetchResults(Number(tabIndex) === OVER_30_TABLE);
   };
+
+const fetchResults = async (isOver30: boolean) => {
+    const data = await getResults(isOver30);
+    console.log(resultsData)
+
+    if(data === undefined) return console.log('Cannot get data from server');
+
+    setResultsData(data);
+}
 
   const renderTable = (activeTab: number) => {
     switch (activeTab) {
       case 0:
-        return <TotalResults />;
+        return <TotalResults resultsData={resultsData}/>;
       case 1:
-        return <ResultOver30 />;
+        return <ResultOver30 resultsData={resultsData}/>;
       case 2:
-        return <Rankings />;
+        return <Rankings resultsData={resultsData}/>;
     }
   };
 

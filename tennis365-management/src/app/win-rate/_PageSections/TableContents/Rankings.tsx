@@ -5,7 +5,7 @@ import {useEffect, useState} from 'react';
 import styles from '../../styles/CalMain.module.css'
 // FIXME: 현재는 서버로 부터 불필요한 데이터를 받아오고 있음(승,패) 나중에 수정 필요
 
-export default function Rankings() {
+export default function Rankings({resultsData}) {
   const winRateColumns = [
     {key: 'rankings', header: '순위'},
     {key: 'name', header: '이름'},
@@ -33,7 +33,7 @@ export default function Rankings() {
   }, []);
 
   const updateResults = async () => {
-    const resultsData = await getResults(false);
+    // const resultsData = await getResults(false);
     if(resultsData === undefined) return console.log('Cannot get data from server');
     setWinRateRankings(
       resultsData.filter((item: IResultData) => item.participation > 30)

@@ -4,7 +4,7 @@ import { getResults } from "@/lib/api";
 import { useEffect, useState } from "react";
 
 
-export default function ResultOver30(){
+export default function ResultOver30({resultsData}){
     const columns = [
         {key: 'rankings', header: '순위'},
         {key: 'name', header: '이름'},
@@ -13,19 +13,18 @@ export default function ResultOver30(){
         {key: 'losses', header: '패'},
         {key: 'win_rate', header: '승률'},
     ]
+    // const [results, setResults] = useState<IResultData[]>();
 
-    const [results, setResults] = useState<IResultData[]>();
+    // useEffect(()=> {
+    //     updateResults()
+    // },[])
 
-    useEffect(()=> {
-        updateResults()
-    },[])
-
-    const updateResults = async () => {
-        const resultsData = await getResults(true);
-        setResults(resultsData);
-    }
+    // const updateResults = async () => {
+    //     const resultsData = await getResults(true);
+    //     setResults(resultsData);
+    // }
 
     return (
-        <Table columns={columns} data={results} />
+        <Table columns={columns} data={resultsData} />
     )
     }

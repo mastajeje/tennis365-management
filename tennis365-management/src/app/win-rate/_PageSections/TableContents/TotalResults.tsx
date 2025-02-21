@@ -3,7 +3,7 @@ import Table from '@/components/Table';
 import {getResults} from '@/lib/api';
 import {useEffect, useState} from 'react';
 
-export default function TotalResults() {
+export default function TotalResults({resultsData}) {
   const columns = [
     {key: 'name', header: '이름'},
     {key: 'participation', header: '참여'},
@@ -13,16 +13,16 @@ export default function TotalResults() {
     {key: 'debt', header: '두오비'},
   ];
 
-  const [results, setResults] = useState<IResultData[]>();
+//   const [results, setResults] = useState<IResultData[]>();
 
-  useEffect(() => {
-    updateResults();
-  }, []);
+//   useEffect(() => {
+//     updateResults();
+//   }, []);
 
-  const updateResults = async () => {
-    const resultsData = await getResults(false);
-    setResults(resultsData);
-  };
+//   const updateResults = async () => {
+//     const resultsData = await getResults(false);
+//     setResults(resultsData);
+//   };
 
-  return <Table columns={columns} data={results} />;
+  return <Table columns={columns} data={resultsData} />;
 }
