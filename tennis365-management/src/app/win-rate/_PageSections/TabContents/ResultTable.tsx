@@ -5,42 +5,48 @@ import styles from '../../styles/PageSections.module.css';
 import {useEffect, useState} from 'react';
 import ResultOver30 from '../TableContents/ResultOver30';
 import Rankings from '../TableContents/Rankings';
-import { getResults } from '@/lib/api';
-import { IResultData } from '@/app/types/match';
+import {getResults} from '@/lib/api';
+import {IResultData} from '@/app/types/match';
 
-const OVER_30_TABLE = 1; 
+const OVER_30_TABLE = 1;
 
 export default function ResultTable() {
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [resultsData, setResultsData] = useState<IResultData[]>();
+  const [resultsData, setResultsData] = useState<IResultData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-useEffect(()=> {
+  useEffect(() => {
     fetchResults(false);
-},[])
+  }, []);
 
   const handleClickTab = (e: React.MouseEvent<HTMLLIElement>) => {
-    const tabIndex = e.currentTarget.getAttribute('data-index');
-    setActiveTab(Number(tabIndex));
-    fetchResults(Number(tabIndex) === OVER_30_TABLE);
+    const tabIndex = Number(e.currentTarget.getAttribute('data-index'));
+    if (tabIndex === activeTab) return;
+    setActiveTab(tabIndex);
+    fetchResults(tabIndex === OVER_30_TABLE);
   };
 
-const fetchResults = async (isOver30: boolean) => {
+  const fetchResults = async (isOver30: boolean) => {
+    setIsLoading(true);
     const data = await getResults(isOver30);
-    console.log(resultsData)
 
-    if(data === undefined) return console.log('Cannot get data from server');
+    if (data === undefined) {
+      console.log('Cannot get data from server');
+      setIsLoading(false);
+    }
 
     setResultsData(data);
-}
+    setIsLoading(false);
+  };
 
   const renderTable = (activeTab: number) => {
     switch (activeTab) {
       case 0:
-        return <TotalResults resultsData={resultsData}/>;
+        return <TotalResults resultsData={resultsData} />;
       case 1:
-        return <ResultOver30 resultsData={resultsData}/>;
+        return <ResultOver30 resultsData={resultsData} />;
       case 2:
-        return <Rankings resultsData={resultsData}/>;
+        return <Rankings resultsData={resultsData} />;
     }
   };
 
@@ -83,7 +89,7 @@ const fetchResults = async (isOver30: boolean) => {
           종합 랭킹
         </li>
       </ul>
-      <div>{renderTable(activeTab)}</div>
+      <div>{isLoading ? <div className={styles.Loading}>Loading...</div> : renderTable(activeTab)}</div>
     </div>
   );
 }

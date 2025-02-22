@@ -30,7 +30,8 @@ try{
   
       return NextResponse.json({is_success: true, results: resultsData}, {status: 200});
     } else {
-        return NextResponse.json({ results:[], message: 'No results found' }, { status: 200 });
+        // No results found
+        return NextResponse.json({ results:[], is_success: true}, { status: 200 });
 
     }
 
