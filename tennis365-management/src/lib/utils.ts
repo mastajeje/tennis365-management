@@ -32,3 +32,9 @@ export const processDateInput = (value: string, name: string, matChDateObj: Date
     }
     return limitedValue;
   };
+
+ export const syncTimezone = (date:Date) => {
+            // to sync with current timezone(multiplied by 60000 to convert to milliseconds)
+            const timezoneOffset = date.getTimezoneOffset() * 60000;
+            return new Date(date.getTime() - timezoneOffset).toISOString();
+  }

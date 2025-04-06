@@ -1,17 +1,27 @@
 'use client';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import styles from '../styles/PageSections.module.css';
 import Modal from '@/components/Modal';
 import {useAuth} from '@/app/context/AuthContext';
 import {useRouter} from 'next/navigation';
 import PasswordModal from './ModalContents/PasswordModal';
 import { validatePassword } from '@/lib/api';
+import { supabase } from '@/lib/supabase/supabase';
 
 export default function WinRateHeader() {
   const {isAuthenticated, validateAuth} = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [password, setPassword] = useState('');
   const router = useRouter();
+
+useEffect(()=> {
+    const fetchPlayer = async () => {
+    const {data} = await supabase.from('player').select("*")
+    console.log(data)
+    }
+    fetchPlayer()
+},[])
+
 
   const handlePasswordModalOpen = () => {
     setIsModalOpen(true);

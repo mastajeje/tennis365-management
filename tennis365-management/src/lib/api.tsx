@@ -48,7 +48,6 @@ export const postNewMeetingDate = async (meetingDateObj: DateObj) => {
     method: 'POST',
     body: JSON.stringify({meetingDate: `${year}-${month}-${day}`}),
   });
-
   return response;
 };
 

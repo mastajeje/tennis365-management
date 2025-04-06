@@ -10,6 +10,7 @@ import {getDayOfWeek, processDateInput} from '@/lib/\butils';
 import {DateObj} from '@/app/types/match';
 import {fetchMatchDate, postNewMeetingDate} from '@/lib/api';
 import DateSelector from '../DateSelector';
+import { insertMatchDate, selectMatchDates } from '@/lib/supabase/query';
 
 // type DateObj = {
 //   year: number;
@@ -59,14 +60,22 @@ export default function WinningPercentageCal() {
 
   const getMatchDates = async (year: number, month: number) => {
     try {
-      const response = await fetchMatchDate(year, month);
+    //   const response = await fetchMatchDate(year, month);
 
-      const data = await response.json();
-      const meetingDates = data.map(
-        (meetingDate: string) => meetingDate.split('T')[0]
-      );
-      setMatchDates(meetingDates);
-      if (!response.ok) throw new Error('Failed to add match');
+    //   const data = await response.json();
+    //   const meetingDates = data.map(
+    //     (meetingDate: string) => meetingDate.split('T')[0]
+    //   );
+    //   setMatchDates(meetingDates);
+    //   if (!response.ok) throw new Error('Failed to add match');
+
+    const {data,error} = await selectMatchDates(year, month);
+
+    if(error){
+        throw new Error('Error fetching match dates:', error);
+    }
+ 
+    setMatchDates(data);
     } catch (error) {
       console.error('Failed to add new meeting date', error);
     }
@@ -110,6 +119,7 @@ export default function WinningPercentageCal() {
 
   const handleAddNewMeetingDate = async () => {
     const response = await postNewMeetingDate(newMatchDateObj);
+
     const {is_success} = await response.json();
     if (!is_success) return alert('이미 추가된 날짜입니다.');
 
