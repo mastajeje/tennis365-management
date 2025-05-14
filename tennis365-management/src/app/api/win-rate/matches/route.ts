@@ -1,3 +1,4 @@
+import { checkPlayers, insertMatchDate, insertPlayer, postMatch } from '@/lib/supabase/query';
 import {NextApiRequest, NextApiResponse} from 'next';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -75,10 +76,10 @@ export async function POST(req: Request) {
     const data = await req.json();
     const {aTeam, bTeam, aScore, bScore, matchDate} = data;
 
-    const checkNonExistPlayer = await checkPlayers([...aTeam, ...bTeam]);
+    const nonExistPlayer = await checkNonExistPlayers([...aTeam, ...bTeam]);
 
-    if (checkNonExistPlayer?.missingPlayers.length > 0) {
-      handleMissingPlayers(checkNonExistPlayer.missingPlayers);
+    if (nonExistPlayer.length > 0) {
+      handleMissingPlayers(nonExistPlayer);
     }
 
     // 점수가 0일때를 falsy가 아닌 값으로 처리하기 위해 체크
@@ -89,38 +90,46 @@ export async function POST(req: Request) {
       bScore !== undefined
     ) {
       const winnerTeam = aScore > bScore ? 'A' : 'B';
-      await query.insert_match_date();
-      const match_result = await query.post_match(
+    //   await query.insert_match_date();
+insertMatchDate(matchDate)
+    
+    //   const match_result = await query.post_match(
+    //     winnerTeam,
+    //     aScore,
+    //     bScore,
+    //     matchDate
+    //   );
+    const match_result = await postMatch(
         winnerTeam,
         aScore,
         bScore,
         matchDate
-      );
+    )
+    console.log('match_result:', match_result);
+    //   if (match_result.rows.length > 0) {
+    //     //경기에 참여한 선수들 정보 불러오기
+    //     const matchedPlayers = [...aTeam, ...bTeam];
+    //     const players = await query.get_matched_players(matchedPlayers);
 
-      if (match_result.rows.length > 0) {
-        //경기에 참여한 선수들 정보 불러오기
-        const matchedPlayers = [...aTeam, ...bTeam];
-        const players = await query.get_matched_players(matchedPlayers);
+    //     if (players.rows.length > 0) {
+    //       const playerPromises = players.rows.map(
+    //         (player: {name: string; id: number}) =>
+    //           handlePlayerMatch(
+    //             winnerTeam,
+    //             match_result.rows[0].id,
+    //             player,
+    //             aTeam,
+    //             bTeam
+    //           )
+    //       );
+    //       await Promise.all(playerPromises);
+    //     }
 
-        if (players.rows.length > 0) {
-          const playerPromises = players.rows.map(
-            (player: {name: string; id: number}) =>
-              handlePlayerMatch(
-                winnerTeam,
-                match_result.rows[0].id,
-                player,
-                aTeam,
-                bTeam
-              )
-          );
-          await Promise.all(playerPromises);
-        }
-
-        return Response.json({
-          message: 'success',
-          matchID: match_result.rows[0].id,
-        });
-      }
+    //     return Response.json({
+    //       message: 'success',
+    //       matchID: match_result.rows[0].id,
+    //     });
+    //   }
     }
     return new Response(JSON.stringify({message: 'Invalid scores'}), {
       status: 400,
@@ -173,21 +182,31 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
   
 }
 
-const checkPlayers = async (playerNames: string[]) => {
-  const result = await query.check_players_by_name(playerNames);
+const checkNonExistPlayers = async (playerNames: string[]) => {
+//   const result = await query.check_players_by_name(playerNames);
+    const {data} = await checkPlayers(playerNames);
+    if(!data){
+        console.error('Error checking players:', data);
+        return [];
+    }
 
-  const existingPlayers = result.rows.map((row: {name: string}) => row.name);
-  const missingPlayers = playerNames.filter(
-    (name) => !existingPlayers.includes(name)
-  );
+    console.log(data.missingPlayers,'ss')
 
-  return {missingPlayers};
+//   const result = await query.check_players_by_name(playerNames);
+
+//   const existingPlayers = result.rows.map((row: {name: string}) => row.name);
+//   const data.missingPlayers = playerNames.filter(
+//     (name) => !existingPlayers.includes(name)
+//   );
+
+  return data.missingPlayers;
 };
 
 const handleMissingPlayers = async (missingPlayers: string[]) => {
   // DB에 존재하지 않는 선수가 있을 경우 추가
   const insertPromises = missingPlayers.map((playerName) =>
-    query.insert_player(playerName)
+    // query.insert_player(playerName)
+    insertPlayer(playerName)
   );
   await Promise.all(insertPromises);
 };

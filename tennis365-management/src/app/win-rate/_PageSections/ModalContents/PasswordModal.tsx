@@ -14,7 +14,7 @@ export default function PasswordModal({
   handleResetModal,
 }: PasswordModalProps) {
   return (
-    <form className={styles.PasswordModal} onSubmit={handlePassword}>
+    <form id='password-modal' className={styles.PasswordModal} onSubmit={handlePassword} >
       <h2>비밀번호를 입력</h2>
       <p className={styles.PasswordText}>
         모임날짜 추가, 경기결과 삭제 등의

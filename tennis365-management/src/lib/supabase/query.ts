@@ -80,3 +80,64 @@ const formatDate = (date: string) => {
         return {isSuccess:true};
     }
 
+    export const postMatch = async (winnerTeam:string, aScore:number, bScore:number, matchDate:string) => {
+       console.log('matchDate:', matchDate);
+        const {data, error} = await supabase
+        .from('matches')
+        .insert({
+            winner_team: winnerTeam
+            , a_score: aScore
+            , b_score: bScore
+            , match_date: matchDate
+        })
+        .select()
+
+        if(error){
+            console.error('Error inserting match:', error);
+            return {error};
+        }
+        return {data, isSuccess:true};
+    }
+
+    export const checkPlayers = async (players:string[]) => {
+        const {data, error} = await supabase
+        .from('player')
+        .select('name')
+        .in('name', players);
+
+        if(error){
+            console.error('Error fetching players:', error);
+            return {error};
+        }
+
+        //check for non-existing players
+        const missingPlayers = players.filter(player => !data.some((p:{name:string}) => p.name === player));
+        return {data:{missingPlayers}, isSuccess:true};
+    }
+
+    export const insertPlayer = async (playerName:string) => {
+        const {data, error} = await supabase
+        .from('player')
+        .insert({name:playerName})
+        .select()
+        
+        if(error){
+            console.error('Error inserting player:', error);
+            return {error};
+        }
+        return {data, isSuccess:true};
+    }
+    
+    // export const insertMatchDate = async (newDate:string) => {
+    //     const {data,error} = await supabase
+    //     .from('match_calendar')
+    //     .upsert(
+    //         [{ date: newDate || new Date().toISOString() }],
+    //         { onConflict: 'date', ignoreDuplicates: true }
+    //       );
+
+    //     if(error){
+    //         console.error('Error inserting match date:', error);
+    //         return {error};
+    //     }
+    // }
